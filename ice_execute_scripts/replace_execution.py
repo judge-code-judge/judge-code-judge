@@ -27,38 +27,6 @@ _ALLOWED_OPERATORS = {
 }
 
 
-def load_question_program_dict(base_path="evaluation/humaneval/output/humaneval/python-small-test"):
-    """
-    Collect json files under base_path and return
-    {question_id: program} dict from one of the files.
-    """
-
-    # 1️⃣ 모든 json 파일 수집
-    json_paths = glob.glob(f"{base_path}/**/*.json", recursive=True)
-
-    if not json_paths:
-        raise ValueError("No json files found.")
-
-    # 2️⃣ 하나 선택
-    selected_path = random.choice(json_paths)
-
-    print("Using file:", selected_path)
-
-    # 3️⃣ 파일 로드
-    with open(selected_path, "r") as f:
-        data = json.load(f)
-
-    result = {}
-
-    # 4️⃣ question_id -> program dict 생성
-    for item in data.get("data", []):
-        qid = item["question_id"]
-        program = item["program"]
-        result[qid] = program
-
-    return result, json_paths
-
-
 def build_solution(task: dict):
     # print(task.keys())
     prompt = task["prompt"]
@@ -122,59 +90,6 @@ def extract_function_name(intent: str) -> str:
     first_line = intent.strip().split("\n")[0]
     name = first_line.split("def")[1].split("(")[0].strip()
     return name
-
-
-# def run_with_timeout(code, func_name, inp, timeout=2):
-#     queue = mp.Queue()
-
-#     process = mp.Process(
-#         target=_gold_worker,
-#         args=(code, func_name, inp, queue)
-#     )
-
-#     process.start()
-#     process.join(timeout)
-
-#     if process.is_alive():
-#         process.terminate()
-#         process.join()
-#         return "TimeoutError"
-
-#     if not queue.empty():
-#         status, value = queue.get()
-#         if status == "ok":
-#             return value
-#         else:
-#             return f"ExecutionError: {value}"
-
-#     return "UnknownError"
-
-
-# def run_with_timeout(code, func_name, inp, timeout=2):
-#     queue = mp.Queue()
-
-#     process = mp.Process(
-#         target=_gold_worker,
-#         args=(code, func_name, inp, queue)
-#     )
-
-#     process.start()
-#     process.join(timeout)
-
-#     if process.is_alive():
-#         process.terminate()
-#         process.join()
-#         return "TimeoutError"
-
-#     try:
-#         status, value = queue.get_nowait()
-#     except Exception:
-#         return "UnknownError"
-
-#     if status == "ok":
-#         return value
-#     else:
-#         return f"ExecutionError: {value}"
 
 
 import signal
@@ -514,54 +429,3 @@ if __name__ == "__main__":
     mp.set_start_method("spawn", force=True)
     main()
 
-
-
-############################################
-# Worker
-############################################
-
-# def evaluate_single_task(task):
-#     # if task['task_id'] != '99':
-#     #     return None
-
-#     from evalplus.data import get_human_eval_plus
-
-#     # ⚠ worker 안에서 로드 (pickle 안정성)
-#     evalplus_tasks = get_human_eval_plus()
-#     humaneval_tasks = load_humaneval(HUMANEVAL_PATH)
-
-#     task_id = f"HumanEval/{task['task_id']}"
-#     if task_id not in evalplus_tasks:
-#         return task
-    
-
-#     evalplus_task = evalplus_tasks[task_id]
-#     humaneval_task = humaneval_tasks[task_id]
-
-#     func_name = humaneval_task["entry_point"]
-#     print(func_name)
-
-#     for key in list(task.keys()):
-#         if key.startswith("grade-"):
-#             continue
-#         if key.isdigit():
-
-#             snippet_code = build_full_code(
-#                 humaneval_task,
-#                 task[key]
-#             )
-
-#             ratio = evaluate_snippet(
-#                 humaneval_task,
-#                 evalplus_task,
-#                 snippet_code,
-#                 func_name
-#             )
-
-#             grade_key = f"grade-{key}"
-#             if grade_key not in task:
-#                 task[grade_key] = {}
-
-#             task[grade_key]["execution"] = ratio
-
-#     return task
