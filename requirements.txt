@@ -4,3 +4,4 @@ numpy
 openai
 torch
 transformers
+evalplus
