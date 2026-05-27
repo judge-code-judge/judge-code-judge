@@ -146,8 +146,6 @@ def form_filling(
             pad_token_id=pipeline.tokenizer.eos_token_id,
         )[0]["generated_text"].strip()
     elif model.startswith("Qwen"):
-        # print("QWEN")
-        print(message)
         return qwen_flask_request(
             messages=message,
             endpoint=pipeline["url"],
@@ -155,7 +153,6 @@ def form_filling(
             max_tokens=max_tokens,
         )
     elif model.startswith("gpt-5-nano"):
-        print(message)
         return openai_request(
             message=message, model=model, temperature=temperature, max_tokens=max_tokens
         )

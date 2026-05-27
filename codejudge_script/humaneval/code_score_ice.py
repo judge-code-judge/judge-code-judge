@@ -188,18 +188,12 @@ def single_step_workflow(
             return
         start_index = len(out["data"])
 
-    snippet_count = 0
 
     terminators, pipeline = load_model(model)
     for item in tqdm(data[start_index:]):
-        # print(item)
         programs, canonical_solution = get_pair(item, dataset, with_prefix, test_case)
 
         for program_id, program in programs.items():
-            # print("Program")
-            # print(program)
-            # print("Canonical")
-            # print(canonical_solution)
             code_gpt_answer = form_filling(
                 model,
                 compare_prompt,
@@ -214,7 +208,6 @@ def single_step_workflow(
                     "LANGUAGE": test_case.split("-")[0],
                 },
             )
-            # print(code_gpt_answer)
             code_gpt_score = answer_to_score(code_gpt_answer, return_type)
             print(code_gpt_score)
             new_result = {
@@ -229,21 +222,13 @@ def single_step_workflow(
             }
             out["data"].append(new_result)
 
-            snippet_count += 1
-
-            # if snippet_count > 10:
-            #     break
-
         test_name = test_case.split(".")[0]
-        directory_path = f"./output/humaneval-x/{test_name}/ice_data_check/"
+        directory_path = f"./output/humaneval-x/{test_name}/ice_data/"
         os.makedirs(directory_path, exist_ok=True)
         print(directory_path + file_name)
 
         with open(directory_path + file_name, "w") as f:
             json.dump(out, f, indent=4)
-        # if snippet_count > 10:
-        #     break
-
 
 def dual_step_workflow(
     test_case,
@@ -281,25 +266,14 @@ def dual_step_workflow(
     start_index = 0
 
     terminators, pipeline = load_model(model)
-    snippet_count = 0
 
     for item in tqdm(data[start_index:]):
         programs, canonical_solution = get_pair(item, dataset, with_prefix, test_case)
 
-        # print("Program:")
-        # print(programs[0])
-        # print("Solution:")
-        # print(canonical_solution)
-
-        # program = "func HasCloseElements(numbers []float64, threshold float64) bool {\n    for i := 0; i < len(numbers)-1; i++ {\n        if math.Abs(numbers[i] - numbers[i+1]) < threshold {\n            return true\n        }\n    }\n    return false\n}"
         for program_id, program in programs.items():
 
             print(f'Question: {item["question_id"]}')
             print(program_id)
-            # print("Program")
-            # print(program)
-            # print("Canonical")
-            # print(canonical_solution)
             nl_mistakes = form_filling(
                 model,
                 compare_prompt,
@@ -314,7 +288,6 @@ def dual_step_workflow(
                     "LANGUAGE": test_case.split("-")[0],
                 },
             )
-            # print(nl_mistakes)
 
             code_gpt_answer = form_filling(
                 model,
@@ -329,10 +302,6 @@ def dual_step_workflow(
                 },
                 max_tokens=512,
             )
-            print("-----------------------------------------------------------------------")
-            # print(code_gpt_answer)
-            # print("-----------------------------------------------------------------------")
-
             code_gpt_score = answer_to_score(code_gpt_answer, return_type)
             new_result = {
                 "program_id": program_id,
@@ -349,23 +318,13 @@ def dual_step_workflow(
             print("-----------------------------------------------------------------------")
             print(code_gpt_score)
 
-            snippet_count += 1
-
-            # if snippet_count > 10:
-            #     break
-
-
         test_name = test_case.split(".")[0]
-        directory_path = f"./output/humaneval-x/{test_name}/ice_data_check/"
+        directory_path = f"./output/humaneval-x/{test_name}/ice_data/"
         print(directory_path + file_name)
         os.makedirs(directory_path, exist_ok=True)
         with open(directory_path + file_name, "w") as f:
             json.dump(out, f, indent=4)
 
-        # if snippet_count > 10:
-        #     break
-
-        # break
 
 
 def router(
