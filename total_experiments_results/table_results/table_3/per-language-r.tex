@@ -1,0 +1,91 @@
+\begin{table}[t]
+    \setlength{\aboverulesep}{0.12ex}
+    \setlength{\belowrulesep}{0.12ex}
+    \setlength{\cmidrulesep}{0ex}
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{0.8pt}
+    \caption{The breakdown of the results shown in Table~\ref{tab:recent-llms} by programming language.}
+    \label{tab:per-language-r}
+    \begin{tabular}{@{}c|c|ccc@{}}
+        \toprule
+         & Method                  & $r$              & $r_b$             & $r-r_b$                               \\
+        \midrule
+        \midrule
+        \multirow{10}{*}{\rotatebox{90}{Python}}
+         & ICE-Score               & 0.704 / 0.646   & 0.775 / 0.619   & \hl{\textbf{-0.071}} / \hl{\textbf{+0.027}} \\
+         & ICE-Score w/o r         & 0.663 / 0.607   & 0.703 / 0.527   & \hl{\textbf{-0.040}} / \hl{\textbf{+0.080}} \\
+        \cmidrule{2-5}
+         & \textsc{CJ-Bin}         & 0.635 / 0.638   & 0.809 / 0.762   & \hl{\textbf{-0.174}} / \hl{\textbf{-0.124}} \\
+         & \textsc{CJ-Bin} w/o r   & 0.603 / 0.640   & 0.738 / 0.754   & \hl{\textbf{-0.135}} / \hl{\textbf{-0.114}} \\
+         & \textsc{CJ-Score}       & 0.750 / 0.450   & 0.726 / 0.376   & \textbf{+0.023} / \hl{\textbf{+0.073}} \\
+         & \textsc{CJ-Score} w/o r & 0.738 / 0.408   & 0.685 / 0.323   & \hl{\textbf{+0.052}} / \hl{\textbf{+0.085}} \\
+        \cmidrule{2-5}
+         & \textsc{V-Bin}          & 0.607 / 0.458   & 0.788 / 0.564   & \hl{\textbf{-0.181}} / \hl{\textbf{-0.106}} \\
+         & \textsc{V-Bin} w/o r    & 0.548 / 0.514   & 0.673 / 0.569   & \hl{\textbf{-0.126}} / \hl{\textbf{-0.055}} \\
+         & \textsc{V-Score}        & 0.685 / 0.451   & 0.778 / 0.434   & \hl{\textbf{-0.093}} / \textbf{+0.017} \\
+         & \textsc{V-Score} w/o r  & 0.646 / 0.409   & 0.708 / 0.370   & \hl{\textbf{-0.062}} / \hl{\textbf{+0.039}} \\
+        \midrule
+        \midrule
+        \multirow{10}{*}{\rotatebox{90}{Java}}
+         & ICE-Score               & 0.727 / 0.692   & 0.754 / 0.594   & \textbf{-0.027} / \hl{\textbf{+0.098}} \\
+         & ICE-Score w/o r         & 0.642 / 0.686   & 0.628 / 0.564   & +0.014 / \hl{\textbf{+0.122}} \\
+        \cmidrule{2-5}
+         & \textsc{CJ-Bin}         & 0.219 / 0.667   & 0.221 / 0.761   & -0.003 / \hl{\textbf{-0.095}} \\
+         & \textsc{CJ-Bin} w/o r   & 0.264 / 0.598   & 0.325 / 0.678   & \hl{\textbf{-0.061}} / \hl{\textbf{-0.080}} \\
+         & \textsc{CJ-Score}       & 0.761 / 0.669   & 0.653 / 0.517   & \hl{\textbf{+0.107}} / \hl{\textbf{+0.152}} \\
+         & \textsc{CJ-Score} w/o r & 0.709 / 0.327   & 0.616 / 0.075   & \hl{\textbf{+0.094}} / \hl{\textbf{+0.252}} \\
+        \cmidrule{2-5}
+         & \textsc{V-Bin}          & 0.607 / 0.600   & 0.744 / 0.677   & \hl{\textbf{-0.137}} / \hl{\textbf{-0.077}} \\
+         & \textsc{V-Bin} w/o r    & 0.504 / 0.537   & 0.577 / 0.582   & \hl{\textbf{-0.073}} / \hl{\textbf{-0.046}} \\
+         & \textsc{V-Score}        & 0.700 / 0.708   & 0.767 / 0.632   & \hl{\textbf{-0.067}} / \hl{\textbf{+0.076}} \\
+         & \textsc{V-Score} w/o r  & 0.616 / 0.674   & 0.652 / 0.588   & \hl{\textbf{-0.037}} / \hl{\textbf{+0.085}} \\
+        \midrule
+        \midrule
+        \multirow{10}{*}{\rotatebox{90}{C++}}
+         & ICE-Score               & 0.681 / 0.552   & 0.728 / 0.517   & \hl{\textbf{-0.048}} / \hl{\textbf{+0.035}} \\
+         & ICE-Score w/o r         & 0.659 / 0.623   & 0.668 / 0.552   & -0.009 / \hl{\textbf{+0.071}} \\
+        \cmidrule{2-5}
+         & \textsc{CJ-Bin}         & 0.227 / 0.540   & 0.286 / 0.677   & \hl{\textbf{-0.059}} / \hl{\textbf{-0.136}} \\
+         & \textsc{CJ-Bin} w/o r   & 0.189 / 0.599   & 0.213 / 0.706   & -0.024 / \hl{\textbf{-0.108}} \\
+         & \textsc{CJ-Score}       & 0.668 / 0.506   & 0.615 / 0.436   & \hl{\textbf{+0.053}} / \hl{\textbf{+0.069}} \\
+         & \textsc{CJ-Score} w/o r & 0.597 / 0.558   & 0.541 / 0.437   & \hl{\textbf{+0.056}} / \hl{\textbf{+0.121}} \\
+        \cmidrule{2-5}
+         & \textsc{V-Bin}          & 0.564 / 0.519   & 0.700 / 0.595   & \hl{\textbf{-0.136}} / \hl{\textbf{-0.076}} \\
+         & \textsc{V-Bin} w/o r    & 0.452 / 0.448   & 0.571 / 0.520   & \hl{\textbf{-0.120}} / \hl{\textbf{-0.073}} \\
+         & \textsc{V-Score}        & 0.644 / 0.588   & 0.725 / 0.562   & \hl{\textbf{-0.081}} / \hl{\textbf{+0.025}} \\
+         & \textsc{V-Score} w/o r  & 0.550 / 0.637   & 0.595 / 0.567   & \hl{\textbf{-0.046}} / \hl{\textbf{+0.069}} \\
+        \midrule
+        \midrule
+        \multirow{10}{*}{\rotatebox{90}{JavaScript}}
+         & ICE-Score               & 0.557 / 0.533   & 0.664 / 0.490   & \hl{\textbf{-0.108}} / \hl{\textbf{+0.043}} \\
+         & ICE-Score w/o r         & 0.520 / 0.473   & 0.590 / 0.428   & \hl{\textbf{-0.070}} / \hl{\textbf{+0.045}} \\
+        \cmidrule{2-5}
+         & \textsc{CJ-Bin}         & 0.530 / 0.515   & 0.703 / 0.644   & \hl{\textbf{-0.172}} / \hl{\textbf{-0.129}} \\
+         & \textsc{CJ-Bin} w/o r   & 0.467 / 0.528   & 0.614 / 0.635   & \hl{\textbf{-0.147}} / \hl{\textbf{-0.106}} \\
+         & \textsc{CJ-Score}       & 0.630 / 0.551   & 0.575 / 0.443   & \hl{\textbf{+0.055}} / \hl{\textbf{+0.108}} \\
+         & \textsc{CJ-Score} w/o r & 0.568 / 0.482   & 0.518 / 0.336   & \hl{\textbf{+0.050}} / \hl{\textbf{+0.146}} \\
+        \cmidrule{2-5}
+         & \textsc{V-Bin}          & 0.493 / 0.482   & 0.692 / 0.586   & \hl{\textbf{-0.199}} / \hl{\textbf{-0.103}} \\
+         & \textsc{V-Bin} w/o r    & 0.420 / 0.361   & 0.571 / 0.406   & \hl{\textbf{-0.150}} / \hl{\textbf{-0.045}} \\
+         & \textsc{V-Score}        & 0.537 / 0.561   & 0.659 / 0.531   & \hl{\textbf{-0.122}} / \hl{\textbf{+0.030}} \\
+         & \textsc{V-Score} w/o r  & 0.479 / 0.331   & 0.579 / 0.298   & \hl{\textbf{-0.099}} / \hl{\textbf{+0.034}} \\
+        \midrule
+        \midrule
+        \multirow{10}{*}{\rotatebox{90}{Go}}
+         & ICE-Score               & 0.649 / 0.496   & 0.731 / 0.517   & \hl{\textbf{-0.082}} / \hl{\textbf{-0.020}} \\
+         & ICE-Score w/o r         & 0.581 / 0.308   & 0.626 / 0.286   & \hl{\textbf{-0.045}} / \hl{\textbf{+0.021}} \\
+        \cmidrule{2-5}
+         & \textsc{CJ-Bin}         & 0.571 / 0.461   & 0.731 / 0.582   & \hl{\textbf{-0.159}} / \hl{\textbf{-0.121}} \\
+         & \textsc{CJ-Bin} w/o r   & 0.525 / 0.418   & 0.644 / 0.503   & \hl{\textbf{-0.119}} / \hl{\textbf{-0.085}} \\
+         & \textsc{CJ-Score}       & 0.589 / 0.176   & 0.632 / 0.192   & \hl{\textbf{-0.043}} / \textbf{-0.016} \\
+         & \textsc{CJ-Score} w/o r & 0.493 / 0.046   & 0.530 / 0.103   & \hl{\textbf{-0.037}} / \hl{\textbf{-0.056}} \\
+        \cmidrule{2-5}
+         & \textsc{V-Bin}          & 0.576 / 0.313   & 0.710 / 0.381   & \hl{\textbf{-0.135}} / \hl{\textbf{-0.068}} \\
+         & \textsc{V-Bin} w/o r    & 0.522 / 0.138   & 0.631 / 0.140   & \hl{\textbf{-0.109}} / -0.002 \\
+         & \textsc{V-Score}        & 0.627 / 0.531   & 0.719 / 0.555   & \hl{\textbf{-0.092}} / \hl{\textbf{-0.025}} \\
+         & \textsc{V-Score} w/o r  & 0.562 / 0.212   & 0.625 / 0.166   & \hl{\textbf{-0.064}} / \hl{\textbf{+0.046}} \\
+        \bottomrule
+    \end{tabular}
+    \vspace{-10pt}
+\end{table}

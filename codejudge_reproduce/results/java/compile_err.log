@@ -1,0 +1,53 @@
+########### LLM이 생성한 코드 snippet 문제 -> 컴파일 에러 ######### (총 25개 task)
+## 미완성 코드(코드가 짤려있음/완성이 안되어있음) ##
+Task: 32 | [COMPILE ERROR]
+Task: 68 | [COMPILE ERROR]
+Task: 73 | [COMPILE ERROR]
+Task: 81 | [COMPILE ERROR]
+Task: 110 | [COMPILE ERROR]
+Task: 115 | [COMPILE ERROR]
+Task: 118 | [COMPILE ERROR]
+Task: 124 | [COMPILE ERROR]
+Task: 129 | [COMPILE ERROR]
+Task: 130 | [COMPILE ERROR]
+Task: 141 | [COMPILE ERROR]
+Task: 143 | [COMPILE ERROR]
+Task: 153 | [COMPILE ERROR]
+
+## 정의되지 않은 메서드 호출 ##
+Task: 39 | [COMPILE ERROR]  # isPrime(fib[i])
+Task: 96 | [COMPILE ERROR]  # isPrime(i) 존재하지 않는 메서드 사용 (정의누락)
+Task: 105 | [COMPILE ERROR] # getDigitName(num) 존재하지 않는 메서드 사용 (정의누락)
+Task: 107 | [COMPILE ERROR] # isPalindrome(i) 존재하지 않는 메서드 사용 (정의누락)
+Task: 112 | [COMPILE ERROR] # isPalindrome(res) 존재하지 않는 메서드 사용 (정의누락)
+Task: 117 | [COMPILE ERROR] # countConsonants(str) 존재하지 않는 메서드 사용 (정의누락)
+Task: 118 | [COMPILE ERROR] # isVowel(wordChars[i], vowels) 존재하지 않는 메서드 사용 (정의누락)
+Task: 127 | [COMPILE ERROR] # isPrime(end - start + 1) 존재하지 않는 메서드 사용 (정의누락)
+Task: 143 | [COMPILE ERROR] # isPrime(words[i].length()) 존재하지 않는 메서드 사용 (정의누락)
+Task: 147 | [COMPILE ERROR] # a[i], a[j], a[k] 존재하지 않는 변수 사용 (정의누락)
+
+## Timeout ##
+Task: 76 | TIMEOUT: Execution exceeded limit
+(n 이 1,0 일떄 무한루프)
+public boolean isSimplePower(int x, int n) {
+    int i = 1;
+    while (i <= x) {
+        if (i == x) {
+            return true;
+        }
+        i *= n;
+    }
+    return false;
+}
+
+Task: 100 | TIMEOUT: Execution exceeded limit
+(llm생성 코드 무한루프)
+while (n > 0) {
+        result.add(n);
+        n = n % 2 == 0 ? n + 1 : n + 2; 
+}
+
+##########################################################
+
+추가 특이사항 Task7: 
+Rational Score 1.0 -> binary 결과 false로 되어있음

@@ -1,0 +1,26 @@
+\begin{table*}[!t]
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{0.8pt}
+    \caption{The correlation results on MBPP and APPS benchmarks (GPT-5-nano). We present the results in the format of X / Y, where X corresponds to MBPP and Y to APPS.}
+    \label{tab:mbpp-apps}
+    \begin{tabular}{@{}l|ccc|ccc|ccc@{}}
+        \toprule
+        Method & $r$ & $r_b$ & $r-r_b$ & $\rho$ & $\rho_b$ & $\rho-\rho_b$ & $\tau$ & $\tau_b$ & $\tau-\tau_b$ \\
+        \midrule
+        \textsc{V-Bin}               & 0.490 / 0.655    & 0.557 / 0.822    & \hl{\textbf{-0.067}} / \hl{\textbf{-0.167}}  & 0.531 / 0.471    & 0.557 / 0.822    & \hl{\textbf{-0.026}} / \hl{\textbf{-0.351}}  & 0.487 / 0.413    & 0.557 / 0.822    & \hl{\textbf{-0.071}} / \hl{\textbf{-0.409}}  \\
+        \textsc{V-Bin} w/o r         & 0.466 / 0.669    & 0.456 / 0.813    & +0.011 / \hl{\textbf{-0.144}}                & 0.479 / 0.487    & 0.456 / 0.813    & \hl{\textbf{+0.023}} / \hl{\textbf{-0.325}}  & 0.438 / 0.428    & 0.456 / 0.813    & \hl{\textbf{-0.017}} / \hl{\textbf{-0.385}}  \\
+        \textsc{V-Score}             & 0.530 / 0.778    & 0.569 / 0.845    & \hl{\textbf{-0.039}} / \hl{\textbf{-0.067}}  & 0.551 / 0.659    & 0.570 / 0.688    & \hl{\textbf{-0.019}} / -0.029                & 0.489 / 0.575    & 0.532 / 0.653    & \hl{\textbf{-0.044}} / \hl{\textbf{-0.077}}  \\
+        \textsc{V-Score} w/o r       & 0.478 / 0.737    & 0.464 / 0.786    & +0.014 / \hl{\textbf{-0.049}}                & 0.450 / 0.641    & 0.441 / 0.628    & +0.009 / +0.013                              & 0.395 / 0.557    & 0.409 / 0.597    & \hl{\textbf{-0.014}} / -0.041                \\
+        \midrule
+        ICE-Score                    & 0.557 / 0.704    & 0.573 / 0.824    & \textbf{-0.016} / \hl{\textbf{-0.119}}       & 0.576 / 0.523    & 0.582 / 0.670    & -0.006 / \hl{\textbf{-0.147}}                & 0.515 / 0.456    & 0.547 / 0.650    & \hl{\textbf{-0.032}} / \hl{\textbf{-0.194}}  \\
+        ICE-Score w/o r              & 0.525 / 0.713    & 0.485 / 0.811    & \hl{\textbf{+0.039}} / \hl{\textbf{-0.098}}  & 0.503 / 0.548    & 0.474 / 0.660    & \hl{\textbf{+0.028}} / \hl{\textbf{-0.113}}  & 0.448 / 0.478    & 0.448 / 0.640    & +0.001 / \hl{\textbf{-0.162}}                \\
+        \midrule
+        \textsc{CJ-Bin}              & 0.496 / 0.674    & 0.549 / 0.814    & \hl{\textbf{-0.054}} / \hl{\textbf{-0.140}}  & 0.530 / 0.493    & 0.549 / 0.814    & \hl{\textbf{-0.019}} / \hl{\textbf{-0.321}}  & 0.486 / 0.432    & 0.549 / 0.814    & \hl{\textbf{-0.064}} / \hl{\textbf{-0.382}}  \\
+        \textsc{CJ-Bin} w/o r        & 0.450 / 0.667    & 0.448 / 0.814    & +0.002 / \hl{\textbf{-0.147}}                & 0.464 / 0.479    & 0.448 / 0.814    & \hl{\textbf{+0.016}} / \hl{\textbf{-0.335}}  & 0.425 / 0.421    & 0.448 / 0.814    & \hl{\textbf{-0.023}} / \hl{\textbf{-0.393}}  \\
+        \midrule
+        \textsc{CJ-Score}            & 0.512 / 0.604    & 0.520 / 0.597    & -0.008 / +0.007                              & 0.527 / 0.534    & 0.545 / 0.517    & \hl{\textbf{-0.018}} / +0.017                & 0.459 / 0.468    & 0.510 / 0.494    & \hl{\textbf{-0.051}} / -0.026                \\
+        \textsc{CJ-Score} w/o r      & 0.470 / 0.626    & 0.441 / 0.599    & \hl{\textbf{+0.029}} / +0.027                & 0.432 / 0.552    & 0.425 / 0.501    & +0.007 / \hl{\textbf{+0.051}}                & 0.369 / 0.479    & 0.392 / 0.475    & \hl{\textbf{-0.024}} / +0.004                \\
+        \bottomrule
+    \end{tabular}
+\end{table*}

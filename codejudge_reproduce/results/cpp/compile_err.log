@@ -1,0 +1,42 @@
+########### LLM이 생성한 코드 snippet 문제 -> 컴파일 에러 ######### (총 14개 task)
+## 미완성 코드(코드가 짤려있음/완성이 안되어있음) ##
+Task: 81 | [COMPILE ERROR]
+Task: 82 | [COMPILE ERROR]
+Task: 124 | [COMPILE ERROR]
+Task: 129 | [COMPILE ERROR]
+Task: 137 | [COMPILE ERROR]
+Task: 145 | [COMPILE ERROR]
+
+## return 뒤 세미콜론 누락 ##
+Task: 130 | [COMPILE ERROR]
+Task: 153 | [COMPILE ERROR]
+
+## 정의되지 않은 메서드 호출 ##
+Task: 143 | [COMPILE ERROR] -> (if(is_prime(word.length())) : is_prime 함수 정의 안되어 있음)
+
+## 잘못된 타입 사용 ##
+Task: 19 | [COMPILE ERROR] -> (nums[sorted_numbers.back()]) :map<string,int> 의 키로 string이 아닌 char 사용)
+Task: 118 | [COMPILE ERROR] -> (return word[i]) : 반환타입 string인데 char 반환
+Task: 151 | [COMPILE ERROR] -> (lst[i] % 2) : float 타입에 % 연산자 사용
+
+## Timeout ##
+Task: 32 | TIMEOUT: Execution exceeded limit
+while (fabs(fx)>eps){
+    x -= fx / poly(xs, 1); -> 오류
+    fx = poly(xs, x);
+}
+( fabs(fx) > eps 조건이 계속 참이어서 무한루프에 빠짐 )
+
+Task: 36 | TIMEOUT: Execution exceeded limit
+for(int i=1; i<n; i++){
+    if(i%11==0 || i%13==0){
+        while(i>0){
+            if(i%10==7){
+                count++;
+                break;
+            }
+            i /= 10; -> 오류
+        }
+    }
+}
+(i 가 n에 도달하지 못해서, 무한 루프)

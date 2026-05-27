@@ -1,0 +1,32 @@
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{3.5pt}
+    \caption{The results of unified correlation evaluation with 10000 bootstraps (GPT-5-nano vs Qwen3-Next-80B).}
+    \label{tab:unified-settings-models}
+    \begin{tabular}{@{}
+        l|ccc|ccc|ccc@{}}
+        \toprule
+        Method & $r$ & $r_b$ & $r-r_b$ & $\rho$ & $\rho_b$ & $\rho-\rho_b$ & $\tau$ & $\tau_b$ & $\tau-\tau_b$ \\
+        \midrule
+        \midrule
+        ICE-Score               & 0.485 / 0.427   & 0.525 / 0.392   & \hl{\textbf{-0.040}} / \hl{\textbf{+0.036}} & 0.479 / 0.450   & 0.441 / 0.406   & \hl{\textbf{+0.038}} / \hl{\textbf{+0.044}} & 0.404 / 0.375   & 0.407 / 0.378   & -0.003 / -0.003                     \\
+        ICE-Score w/o r         & 0.443 / 0.395   & 0.459 / 0.351   & \hl{\textbf{-0.016}} / \hl{\textbf{+0.044}} & 0.444 / 0.417   & 0.395 / 0.361   & \hl{\textbf{+0.050}} / \hl{\textbf{+0.056}} & 0.371 / 0.350   & 0.363 / 0.339   & \textbf{+0.008} / \textbf{+0.011}   \\
+        \midrule
+        \textsc{CJ-Bin}         & 0.359 / 0.404   & 0.460 / 0.512   & \hl{\textbf{-0.101}} / \hl{\textbf{-0.108}} & 0.405 / 0.451   & 0.460 / 0.512   & \hl{\textbf{-0.055}} / \hl{\textbf{-0.061}} & 0.351 / 0.391   & 0.460 / 0.512   & \hl{\textbf{-0.108}} / \hl{\textbf{-0.120}} \\
+        \textsc{CJ-Bin} w/o r   & 0.337 / 0.397   & 0.425 / 0.490   & \hl{\textbf{-0.088}} / \hl{\textbf{-0.093}} & 0.381 / 0.442   & 0.425 / 0.490   & \hl{\textbf{-0.044}} / \hl{\textbf{-0.048}} & 0.330 / 0.384   & 0.425 / 0.490   & \hl{\textbf{-0.095}} / \hl{\textbf{-0.107}} \\
+        \textsc{CJ-Score}       & 0.480 / 0.239   & 0.435 / 0.147   & \hl{\textbf{+0.045}} / \hl{\textbf{+0.092}} & 0.505 / 0.246   & 0.421 / 0.145   & \hl{\textbf{+0.084}} / \hl{\textbf{+0.102}} & 0.434 / 0.210   & 0.390 / 0.136   & \hl{\textbf{+0.045}} / \hl{\textbf{+0.075}} \\
+        \textsc{CJ-Score} w/o r & 0.457 / 0.183   & 0.408 / 0.087   & \hl{\textbf{+0.049}} / \hl{\textbf{+0.096}} & 0.473 / 0.190   & 0.382 / 0.074   & \hl{\textbf{+0.091}} / \hl{\textbf{+0.116}} & 0.400 / 0.163   & 0.351 / 0.071   & \hl{\textbf{+0.049}} / \hl{\textbf{+0.092}} \\
+        \midrule
+        \textsc{V-Bin}          & 0.449 / 0.382   & 0.579 / 0.461   & \hl{\textbf{-0.130}} / \hl{\textbf{-0.079}} & 0.505 / 0.420   & 0.579 / 0.461   & \hl{\textbf{-0.074}} / \hl{\textbf{-0.041}} & 0.438 / 0.364   & 0.579 / 0.461   & \hl{\textbf{-0.141}} / \hl{\textbf{-0.097}} \\
+        \textsc{V-Bin} w/o r    & 0.378 / 0.338   & 0.471 / 0.386   & \hl{\textbf{-0.093}} / \hl{\textbf{-0.048}} & 0.425 / 0.365   & 0.471 / 0.386   & \hl{\textbf{-0.046}} / \hl{\textbf{-0.021}} & 0.369 / 0.317   & 0.471 / 0.386   & \hl{\textbf{-0.102}} / \hl{\textbf{-0.069}} \\
+        \textsc{V-Score}        & 0.412 / 0.381   & 0.456 / 0.338   & \hl{\textbf{-0.045}} / \hl{\textbf{+0.043}} & 0.385 / 0.404   & 0.362 / 0.337   & \hl{\textbf{+0.023}} / \hl{\textbf{+0.068}} & 0.314 / 0.328   & 0.325 / 0.309   & \hl{\textbf{-0.011}} / \hl{\textbf{+0.019}} \\
+        \textsc{V-Score} w/o r  & 0.306 / 0.071   & 0.332 / 0.061   & \hl{\textbf{-0.027}} / +0.010       & 0.309 / 0.081   & 0.291 / 0.059   & \hl{\textbf{+0.019}} / \hl{\textbf{+0.022}} & 0.249 / 0.067   & 0.261 / 0.056   & \textbf{-0.011} / \textbf{+0.011}   \\
+        \bottomrule
+    \end{tabular}\\
+    \begin{description}[itemsep=-3pt,topsep=0pt]
+        \item \textbf{CJ:} CodeJudge. \hspace{10pt} \textbf{w/o r}: without reference.
+        \item \textbf{GPT-5-nano / Qwen3-Next-80B format}. $r$: ratio correlation, $r_b$: binary correlation.
+        \item \textbf{Note}: Bold text indicates significance at $p < 0.05$. Highlighted bold text indicates significance at $p < 0.01$.
+    \end{description}
+\end{table*}

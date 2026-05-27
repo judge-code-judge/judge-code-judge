@@ -1,0 +1,1334 @@
+{
+    "parameters": {
+        "model": "gpt-3.5-turbo-1106",
+        "compare_prompt": [
+            {
+                "role": "system",
+                "content": "Determine the correctness of the code snippet. Output Yes or No. \n\nProblem Statement:\n{{PROBLEM}}\n\nReference Solution:\n{{CODE2}}\n\nCode Snippet:\n{{CODE1}}\n\nAnswer (Yes or No only):\n"
+            }
+        ],
+        "temperature": 0.0
+    },
+    "data": [
+        {
+            "pass": true,
+            "program": "\nconst reverseDelete = (s, c) => {\n\n  let result = '';\n  let isPalindrome = true;\n  for (let i = 0; i < s.length; i++) {\n    if (c.indexOf(s[i]) === -1) {\n      result += s[i];\n    }\n  }\n  for (let i = 0; i < result.length / 2; i++) {\n    if (result[i] !== result[result.length - i - 1]) {\n      isPalindrome = false;\n      break;\n    }\n  }\n  return [result, isPalindrome];\n};\n",
+            "canonical_solution": "\nconst reverseDelete = (s, c) => {\n  let t = ''\n  for (let i = 0; i < s.length; i++) {\n    let y = 1\n    for (let j = 0; j < c.length; j++) {\n      if (s[i] == c[j]) {\n        y = 0\n      }\n    }\n    if (y == 1) {\n      t += s[i]\n    }\n  }\n  let z = 1\n  for (let i = 0; i < t.length; i++) {\n    if (t[i] != t[t.length - i - 1]) {\n      z = 0\n    }\n  }\n  if (z == 0) {\n    return (z, false)\n  }\n  return (z, true)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "112"
+        },
+        {
+            "pass": true,
+            "program": "\nconst belowZero = (operations) => {\n\n  let balance = 0;\n  for (let i = 0; i < operations.length; i++) {\n    balance += operations[i];\n    if (balance < 0) {\n      return true;\n    }\n  }\n  return false;\n};\n\nmodule.exports = belowZero;\n",
+            "canonical_solution": "\nconst belowZero = (operations) => {\n  var balance = 0;\n  for (const op of operations) {\n    balance += op;\n    if (balance < 0) {\n      return true;\n    }\n  }\n  return false;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "3"
+        },
+        {
+            "pass": false,
+            "program": "\nconst chooseNum = (x, y) => {\n\n  for (let i = x; i <= y; i++) {\n    if (i % 2 === 0) return i;\n  }\n  return -1;\n};\n",
+            "canonical_solution": "\nconst chooseNum = (x, y) => {\n  for (let i = y; i >= x; i--) {\n    if (i % 2 == 0) {return i }\n  }\n  return -1\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "102"
+        },
+        {
+            "pass": true,
+            "program": "\nconst sameChars = (s0, s1) => {\n\n  const s0Set = new Set(s0);\n  const s1Set = new Set(s1);\n  return s0Set.size === s1Set.size && [...s0Set].every(c => s1Set.has(c));\n};\n",
+            "canonical_solution": "\nconst sameChars = (s0, s1) => {\n  return JSON.stringify([...new Set(s0)].sort()) === JSON.stringify([...new Set(s1)].sort());\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "54"
+        },
+        {
+            "pass": false,
+            "program": "\nconst poly = (xs, x) => {\n  return xs.reduce((prev, item, index) => {\n    return prev + item * Math.pow(x, index);\n  }, 0);\n}\n\nconst findZero = (xs) => {\n\n  if (xs.length % 2 === 0) {\n    const largest = xs.reduce((prev, item) => {\n      return Math.abs(item) > Math.abs(prev) ? item : prev;\n    }, 0);\n    if (largest === 0) {\n      return 0;\n    }\n    const n = xs.length;\n    const a = xs[n - 1] / largest;\n    const b = xs[n - 2] / largest;\n    const c = xs[n - 3] / largest;\n    const d = xs[n - 4] / largest;\n    const q = (a * c - b * b) / 3;\n    const r = (2 * b * b * b - 9 * a * b * c + 27 * a * a * d) / 27;\n    const x1 = (q * q * q - r * q) / 2",
+            "canonical_solution": "\nconst poly = (xs, x) => {\n  return xs.reduce((prev, item, index) => {\n    return prev + item * Math.pow(x, index);\n  }, 0);\n}\n\nconst findZero = (xs) => {\n  var begin = -1.0, end = 1.0;\n  while (poly(xs, begin) * poly(xs, end) > 0) {\n    begin *= 2.0;\n    end *= 2.0;\n  }\n  while (end - begin > 1e-10) {\n    let center = (begin + end) / 2.0;\n    if (poly(xs, center) * poly(xs, begin) > 0)\n      begin = center;\n    else\n      end = center;\n  }\n  return begin;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "32"
+        },
+        {
+            "pass": false,
+            "program": "\nconst isMultiplyPrime = (a) => {\n\n  let prime = [];\n  for (let i = 2; i < a; i++) {\n    if (a % i === 0) {\n      prime.push(i);\n    }\n  }\n  if (prime.length === 3) {\n    return true;\n  } else {\n    return false;\n  }\n};\n",
+            "canonical_solution": "\nconst isMultiplyPrime = (a) => {\n  var isPrime = function (n) {\n    for (let j = 2; j < n; j++)\n      if (n % j == 0)\n        return false;\n    return true;\n  }\n\n  for (let i = 2; i < 101; i++) {\n    if (!isPrime(i)) continue;\n    for (let j = 2; j < 101; j++) {\n      if (!isPrime(j)) continue;\n      for (let k = 2; k < 101; k++) {\n        if (!isPrime(k)) continue;\n        if (i*j*k == a)\n          return true;\n      }\n    }\n  }\n  return false;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "75"
+        },
+        {
+            "pass": true,
+            "program": "\nconst allPrefixes = (string) => {\n\n  const prefixes = [];\n  for (let i = 0; i < string.length; i++) {\n    prefixes.push(string.slice(0, i + 1));\n  }\n  return prefixes;\n};\n",
+            "canonical_solution": "\nconst allPrefixes = (string) => {\n  var result = [];\n  for (let i = 0; i < string.length; i++) {\n    result.push(string.slice(0, i+1));\n  }\n  return result;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "14"
+        },
+        {
+            "pass": false,
+            "program": "\nconst prodSigns = (arr) => {\n\n  if (arr.length === 0) return null;\n  let result = 0;\n  let product = 1;\n  for (let i = 0; i < arr.length; i++) {\n    if (arr[i] < 0) {\n      product *= -1;\n    }\n    result += product * Math",
+            "canonical_solution": "\nconst prodSigns = (arr) => {\n  if (arr.length == 0) { return null }\n  let n = 1\n  let s = 0\n  for (let i = 0; i < arr.length; i++) {\n    s += arr[i]\n    if (arr[i] == 0) { return 0 }\n    if (arr[i] < 0) { n = -n; s -= 2 * arr[i] }\n  }\n  return s * n\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "128"
+        },
+        {
+            "pass": true,
+            "program": "\nconst add = (x, y) => {\n\n  return x + y;\n};\n",
+            "canonical_solution": "\nconst add = (x, y) => {\n  return x + y;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "53"
+        },
+        {
+            "pass": true,
+            "program": "\nconst pairsSumToZero = (l) => {\n\n  for (let i = 0; i < l.length; i++) {\n    for (let j = i + 1; j < l.length; j++) {\n      if (l[i] + l[j] === 0) {\n        return true;\n      }\n    }\n  }\n  return false;\n};\n\nmodule.exports = pairsSumToZero;\n",
+            "canonical_solution": "\nconst pairsSumToZero = (l) => {\n  for (let i = 0; i < l.length; i++)\n    for (let j = i + 1; j < l.length; j++)\n      if (l[i] + l[j] == 0)\n        return true;\n  return false;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "43"
+        },
+        {
+            "pass": true,
+            "program": "\nconst fibfib = (n) => {\n\n  if (n === 0) return 0;\n  if (n === 1) return 0;\n  if (n === 2) return 1;\n  return fibfib(n - 1) + fibfib(n - 2) + fibfib(n - 3);\n};\n",
+            "canonical_solution": "\nconst fibfib = (n) => {\n  if (n == 0 || n == 1)\n    return 0;\n  if (n == 2)\n    return 1;\n  return fibfib(n - 1) + fibfib(n - 2) + fibfib(n - 3);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "63"
+        },
+        {
+            "pass": false,
+            "program": "\nconst closestInteger = (value) => {\n\n  const num = parseFloat(value);\n  if (num % 1 === 0) {\n    return num;\n  }\n  return num > 0 ? Math.ceil(num) : Math.floor(num);\n};\n\nmodule.exports = closestInteger;\n",
+            "canonical_solution": "\nconst closestInteger = (value) => {\n  value = Number(value)\n  let t = value % 1\n  if (t < 0.5 && t > -0.5) { value -= t }\n  else { value += t }\n  return value\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "99"
+        },
+        {
+            "pass": true,
+            "program": "\nconst modp = (n, p) => {\n\n  let result = 1;\n  for (let i = 0; i < n; i++) {\n    result = (result * 2) % p;\n  }\n  return result;\n};\n\nmodule.exports = modp;\n",
+            "canonical_solution": "\nconst modp = (n, p) => {\n  var ret = 1;\n  for (let i = 0; i < n; i++)\n    ret = (2 * ret) % p;\n  return ret;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "49"
+        },
+        {
+            "pass": true,
+            "program": "\nconst circularShift = (x, shift) => {\n\n  let str = x.toString();\n  let len = str.length;\n  if (shift > len) {\n    return str.split(\"\").reverse().join(\"\");\n  } else {\n    let arr = str.split(\"\");\n    let temp = arr.splice(0, len - shift);\n    arr = arr.concat(temp);\n    return arr.join(\"\");\n  }\n};\n\nmodule.exports = circularShift;\n",
+            "canonical_solution": "\nconst circularShift = (x, shift) => {\n  s = x.toString();\n  if (shift > s.length)\n    return s.split('').reverse().join('');\n  else\n    return s.slice(-shift) + s.slice(0, -shift);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "65"
+        },
+        {
+            "pass": false,
+            "program": "\nconst getClosestVowel = (word) => {\n\n  let vowels = [\"a\", \"e\", \"i\", \"o\", \"u\"];\n  let consonants = [\"b\", \"c\", \"d\", \"f\", \"g\", \"h\", \"j\", \"k\", \"l\", \"m\", \"n\", \"p\", \"q\", \"r\", \"s\", \"t\", \"v\", \"w\", \"x\", \"y\", \"z\"];\n  let wordArray = word.split(\"\");\n  let lastConsonant = \"\";\n  let firstConsonant = \"\";\n  let closestVowel = \"\";\n\n  wordArray.forEach((letter, index) => {\n    if (consonants.includes(letter)) {\n      lastConsonant = letter;\n    }\n    if (consonants.includes(wordArray[index - 1])) {\n      firstConsonant = wordArray[index - 1];\n    }\n  });\n\n  if (lastConsonant !== \"\" && firstConsonant !== \"\") {\n    wordArray.forEach((letter, index) => {\n      if (vowels.includes(letter) && index > wordArray.indexOf(firstConsonant) && index < wordArray.indexOf(lastConsonant)) {\n        closestVowel = letter;\n      }\n    });\n  }\n\n  return closestVowel;\n};\n\nconsole",
+            "canonical_solution": "\nconst getClosestVowel = (word) => {\n  for (let i = word.length - 2; i > 0; i--) {\n    if (\n      !(word[i] != 'a' && word[i] != 'e' && word[i] != 'i' && word[i] != 'o' && word[i] != 'u' && word[i] != 'A' &&\n        word[i] != 'U' && word[i] != 'O' && word[i] != 'I' && word[i] != 'E')\n      &&\n      (word[i + 1] != 'a' && word[i + 1] != 'e' && word[i + 1] != 'i' && word[i + 1] != 'o' && word[i + 1] != 'u' && word[i + 1] != 'A' &&\n        word[i + 1] != 'U' && word[i + 1] != 'O' && word[i + 1] != 'I' && word[i + 1] != 'E')\n      &&\n      (word[i - 1] != 'a' && word[i - 1] != 'e' && word[i - 1] != 'i' && word[i - 1] != 'o' && word[i - 1] != 'u' && word[i - 1] != 'A' &&\n        word[i - 1] != 'U' && word[i - 1] != 'O' && word[i - 1] != 'I' && word[i - 1] != 'E')\n    ) {\n      return word[i]\n    }\n  }\n  return ''\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "118"
+        },
+        {
+            "pass": false,
+            "program": "\nconst maxFill = (grid, capacity) => {\n\n  const rows = grid.length;\n  const cols = grid[0].length;\n  const dp = new Array(rows).fill(0).map(() => new Array(cols).fill(0));\n\n  for (let i = 0; i < rows; i++) {\n    for (let j = 0; j < cols; j++) {\n      if (grid[i][j] === 1) {\n        dp[i][j] = 1;\n        continue;\n      }\n\n      if (i === 0) {\n        dp[i][j] = 0;\n        continue;\n      }\n\n     ",
+            "canonical_solution": "\nconst maxFill = (grid, capacity) => {\n  let p = 0\n  for (let i = 0; i < grid.length; i++) {\n    let m = 0\n    for (let j = 0; j < grid[i].length; j++) {\n      if (grid[i][j] == 1) { m++ }\n    }\n    while (m > 0) {\n      m -= capacity;\n      p++;\n    }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "115"
+        },
+        {
+            "pass": false,
+            "program": "\nconst vowelsCount = (s) => {\n\n  let vowels = ['a', 'e', 'i', 'o', 'u'];\n  let count = 0;\n  for (let i = 0; i < s.length; i++) {\n    if (vowels.includes(s[i].toLowerCase())) {\n      count++;\n    }\n  }\n  return count;\n};\n",
+            "canonical_solution": "\nconst vowelsCount = (s) => {\n  var vowels = \"aeiouAEIOU\";\n  var n_vowels = s.split('').reduce((prev, item) => {\n    return prev + (vowels.includes(item));\n  }, 0);\n  if (s.at(-1) == 'y' || s.at(-1) == 'Y')\n    n_vowels += 1;\n  return n_vowels;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "64"
+        },
+        {
+            "pass": true,
+            "program": "\nconst countDistinctCharacters = (string) => {\n\n  const distinctCharacters = new Set();\n  for (const char of string) {\n    distinctCharacters.add(char.toLowerCase());\n  }\n  return distinctCharacters.size;\n};\n\nmodule.exports = countDistinctCharacters;\n",
+            "canonical_solution": "\nconst countDistinctCharacters = (string) => {\n  return (new Set(string.toLowerCase())).size;\n\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "16"
+        },
+        {
+            "pass": false,
+            "program": "\nconst startsOneEnds = (n) => {\n\n  let count = 0;\n  for (let i = 1; i < 10; i++) {\n    count += Math.pow(10, n - 1);\n  }\n  for (let i = 1; i < 10; i++) {\n    count += Math.pow(10, n - 1);\n  }\n  return count;\n};\n\nconst startsOneEnds = (n) => {\n  let count = 0;\n  for (let i = 1; i < 10; i++) {\n    count += Math.pow(10, n - 1);\n  }\n  for (let i = 1; i < 10; i++) {\n    count += Math.pow(10, n - 1);\n  }\n  return count;\n};\n",
+            "canonical_solution": "\nconst startsOneEnds = (n) => {\n  if (n == 1) { return 1 }\n  let t = 18\n  for (let i = 2; i < n; i++) {\n    t = t * 10\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "83"
+        },
+        {
+            "pass": true,
+            "program": "\nconst search = (lst) => {\n\n  const freq = {};\n  const max = Math.max(...lst);\n  lst.forEach((el) => {\n    if (freq[el]) {\n      freq[el] += 1;\n    } else {\n      freq[el] = 1;\n    }\n  });\n  for (let i = max; i > 0; i -= 1) {\n    if (freq[i] >= i) {\n      return i;\n    }\n  }\n  return -1;\n};\n\nmodule.exports = search;\n",
+            "canonical_solution": "\nconst search = (lst) => {\n  var frq = new Array(Math.max(...lst) + 1).fill(0);\n  for (const i of lst)\n    frq[i] += 1;\n  var ans = -1;\n  for (let i = 1; i < frq.length; i++)\n    if (frq[i] >= i)\n      ans = i;\n  return ans;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "69"
+        },
+        {
+            "pass": false,
+            "program": "\nconst digits = (n) => {\n\n  let product = 1;\n  while (n > 0) {\n    let digit = n % 10;\n    if (digit % 2 !== 0) {\n      product *= digit;\n    }\n    n = Math.floor(n / 10);\n  }\n  return product;\n};\n\nmodule.",
+            "canonical_solution": "\nconst digits = (n) => {\n  let p = 1\n  let k = 1\n  while (n > 0) {\n    let y = n % 10\n    if (y % 2 == 1) {\n      p *= y; k = 0;\n    }\n    n = (n - n % 10) / 10\n  }\n  if (k == 0) { return p }\n  return 0\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "131"
+        },
+        {
+            "pass": true,
+            "program": "\nconst factorize = (n) => {\n\n  const factors = [];\n  let i = 2;\n  while (n > 1) {\n    if (n % i === 0) {\n      factors.push(i);\n      n /= i;\n    } else {\n      i++;\n    }\n  }\n  return factors;\n};\n\nmodule.exports = factorize;\n",
+            "canonical_solution": "\nconst factorize = (n) => {\n  var fact = [], i = 2;\n  while (i <= Math.sqrt(n) + 1) {\n    if (n % i == 0) {\n      fact.push(i);\n      n = n / i;\n    } else {\n      i += 1;\n    }\n  }\n\n  if (n > 1)\n    fact.push(n);\n  return fact;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "25"
+        },
+        {
+            "pass": false,
+            "program": "\nconst hexKey = (num) => {\n\n  let count = 0;\n  for (let i = 0; i < num.length; i++) {\n    if (num[i] === \"2\" || num[i] === \"3\" || num[i] === \"5\" || num[i] === \"7\") {\n      count++;\n    }\n  }\n  return count;\n};\n",
+            "canonical_solution": "\nconst hexKey = (num) => {\n  var primes = \"2357BD\",\n      total = 0;\n  for (let i = 0; i < num.length; i++)\n    if (primes.includes(num[i]))\n      total++;\n  return total;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "78"
+        },
+        {
+            "pass": false,
+            "program": "\nconst exchange = (lst1, lst2) => {\n\n  let even = 0;\n  let odd = 0;\n  for (let i = 0; i < lst1.length; i++) {\n    if (lst1[i] % 2 === 0) {\n      even++;\n    } else {\n      odd++;\n    }\n  }\n  if (even === lst1.length) {\n    return \"YES\";\n  } else if (odd > lst2.length) {\n    return \"NO\";\n  } else {\n    return \"YES\";\n  }\n};\n",
+            "canonical_solution": "\nconst exchange = (lst1, lst2) => {\n  let k = lst1.length\n  let t = 0\n  for (let i = 0; i < lst1.length; i++) {\n    if (lst1[i] % 2 == 0) { t++ }\n  }\n  for (let i = 0; i < lst2.length; i++) {\n    if (lst2[i] % 2 == 0) { t++ }\n  }\n  if (t >= k) { return 'YES' }\n  return 'NO'\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "110"
+        },
+        {
+            "pass": true,
+            "program": "\nconst greatestCommonDivisor = (a, b) => {\n\n  if (b === 0) {\n    return a;\n  }\n  return greatestCommonDivisor(b, a % b);\n};\n",
+            "canonical_solution": "\nconst greatestCommonDivisor = (a, b) => {\n  while (b != 0) {\n    let temp = a;\n    a = b;\n    b = temp % b;\n  }\n  return a;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "13"
+        },
+        {
+            "pass": false,
+            "program": "\nconst isBored = (S) => {\n\n  let count = 0;\n  let words = S.split(\" \");\n  for (let i = 0; i < words.length; i++) {\n    if (words[i] === \"I\") {\n      count++;\n    }\n  }\n  return count;\n};\n\nmodule.exports = isBored;\n",
+            "canonical_solution": "\nconst isBored = (S) => {\n  let t = 0\n  if (S[0] == 'I' && S[1] == ' ') { t = 1 }\n  for (let i = 0; i < S.length; i++) {\n    if (S[i] == '.' || S[i] == '!' || S[i] == '?') {\n      if (S[i + 1] == ' ' && S[i + 2] == 'I' && S[i + 3] == ' ') {\n        t++\n      }\n    }\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "91"
+        },
+        {
+            "pass": false,
+            "program": "\nconst checkIfLastCharIsALetter = (txt) => {\n\n  const lastChar = txt[txt.length - 1];\n  const lastCharIsLetter = lastChar.match(/[a-zA-Z]/);\n  const lastCharIsSpace = lastChar === \" \";\n  return lastCharIsLetter && !lastCharIsSpace;\n};\n",
+            "canonical_solution": "\nconst checkIfLastCharIsALetter = (txt) => {\n  let len = txt.length\n  if (len == 0) { return false }\n  let y = txt[len - 1].charCodeAt()\n  if (len == 1) {\n    if ((y >= 65 && y <= 90) || (y >= 97 && y <= 122)) { return true }\n    return false\n  }\n  if (txt[len - 2] == ' ' && ((y >= 65 && y <= 90) || (y >= 97 && y <= 122))) { return true }\n  return false\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "134"
+        },
+        {
+            "pass": false,
+            "program": "\nconst fixSpaces = (text) => {\n\n  return text.replace(/\\s+/g, (match) => {\n    if (match.length === 1) {\n      return \"_\";\n    } else {\n      return \"-\";\n    }\n  });\n};\n",
+            "canonical_solution": "\nconst fixSpaces = (text) => {\n  let t = ''\n  let c = 0\n  for (let i = 0; i < text.length; i++) {\n    if (text[i] == ' ') { c++ }\n    else if (c > 0) {\n      if (c == 1) { t += '_' }\n      if (c == 2) { t += '__' }\n      if (c > 2) { t += '-' }\n      t += text[i]\n      c = 0;\n    } else {\n      t += text[i]\n    }\n  }\n  if (c == 1) { t += '_' }\n  if (c == 2) { t += '__' }\n  if (c > 2) { t += '-' }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "140"
+        },
+        {
+            "pass": false,
+            "program": "\nconst fizzBuzz = (n) => {\n\n  let count = 0;\n  for (let i = 11; i < n; i += 11) {\n    if (i % 11 === 0) {\n      count += 1;\n    }\n  }\n  for (let i = 13; i < n; i += 13) {\n    if (i % 13 === 0) {\n      count += 1;\n    }\n  }\n  return count;\n};\n\nmodule.exports = fizzBuzz;\n",
+            "canonical_solution": "\nconst fizzBuzz = (n) => {\n  var ns = [], ans = 0;\n  for (let i = 0; i < n; i++)\n    if (i % 11 == 0 || i % 13 == 0)\n      ns.push(i);\n  var s = ns.map(x => x.toString()).join('');\n  for (const c of s)\n    ans += (c == '7');\n  return ans;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "36"
+        },
+        {
+            "pass": true,
+            "program": "\nconst sumToN = (n) => {\n\n  let sum = 0;\n  for (let i = 1; i <= n; i++) {\n    sum += i;\n  }\n  return sum;\n};\n",
+            "canonical_solution": "\nconst sumToN = (n) => {\n  return n * (n + 1) / 2;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "60"
+        },
+        {
+            "pass": true,
+            "program": "\nconst anyInt = (x, y, z) => {\n\n  if (x === y + z || y === x + z || z === x + y) {\n    if (x % 1 === 0 && y % 1 === 0 && z % 1 === 0) {\n      return true;\n    }\n  }\n  return false;\n};\n",
+            "canonical_solution": "\nconst anyInt = (x, y, z) => {\n  if (x % 1 === 0 && y % 1 === 0 && z % 1 === 0 && (x + y === z || x + z === y || x === y + z)) {\n    return true\n  }\n  return false\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "92"
+        },
+        {
+            "pass": true,
+            "program": "\nconst flipCase = (string) => {\n\n  return string.split('').map(char => {\n    if (char === char.toLowerCase()) {\n      return char.toUpperCase();\n    } else {\n      return char.toLowerCase();\n    }\n  }).join('');\n}\n\nmodule.exports = flipCase;\n",
+            "canonical_solution": "\nconst flipCase = (string) => {\n  return string.split('')\n          .map(x => (x.toUpperCase() == x ? x.toLowerCase() : x.toUpperCase()))\n          .join('');\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "27"
+        },
+        {
+            "pass": false,
+            "program": "\nconst maximum = (arr, k) => {\n\n  const result = [];\n  for (let i = 0; i < k; i++) {\n    let max = -Infinity;\n    let index = -1;\n    for (let j = 0; j < arr.length; j++) {\n      if (arr[j] > max) {\n        max = arr[j];\n        index = j;\n      }\n    }\n    result.push(max);\n    arr.splice(index, 1);\n  }\n  return result;\n};\n",
+            "canonical_solution": "\nconst maximum = (arr, k) => {\n  let p = arr\n  for (let j = 0; j < p.length; j++) {\n    let ind = j\n    for (let k = j + 1; k < p.length; k++) {\n      if (p[k] < p[ind]) {\n        ind = k\n      }\n    }\n    if (ind > j) {\n      let tmp = p[j]\n      p[j] = p[ind]\n      p[ind] = tmp\n    }\n  }\n  if (k == 0) { return [] }\n  return p.slice(-k)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "120"
+        },
+        {
+            "pass": true,
+            "program": "\nconst totalMatch = (lst1, lst2) => {\n\n  let totalChars = 0;\n  lst1.forEach((str) => {\n    totalChars += str.length;\n  });\n  let totalChars2 = 0;\n  lst2.forEach((str) => {\n    totalChars2 += str.length;\n  });\n  if (totalChars < totalChars2) {\n    return lst1;\n  } else if (totalChars > totalChars2) {\n    return lst2;\n  } else {\n    return lst1;\n  }\n};\n",
+            "canonical_solution": "\nconst totalMatch = (lst1, lst2) => {\n  var l1 = lst1.reduce(((prev, item) => prev + item.length), 0);\n  var l2 = lst2.reduce(((prev, item) => prev + item.length), 0);\n  if (l1 <= l2)\n    return lst1;\n  else\n    return lst2;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "74"
+        },
+        {
+            "pass": false,
+            "program": "\nconst removeVowels = (text) => {\n\n  const vowels = ['a', 'e', 'i', 'o', 'u'];\n  return text.split('').filter(char => !vowels.includes(char)).join('');\n};\n\nmodule.exports = removeVowels;\n",
+            "canonical_solution": "\nconst removeVowels = (text) => {\n  return text.split(\"\")\n             .filter(s => ![\"a\", \"e\", \"i\", \"o\", \"u\"]\n                      .includes(s.toLowerCase())\n                    )\n             .join(\"\")\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "51"
+        },
+        {
+            "pass": false,
+            "program": "\nconst largestSmallestIntegers = (lst) => {\n\n  let largestNegative = null;\n  let smallestPositive = null;\n\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] < 0) {\n      if (largestNegative === null || lst[i] > largestNegative) {\n        largestNegative = lst[i];\n      }\n    } else if (lst[i] > 0) {\n      if (smallestPositive === null || lst[i] < smallestPositive) {\n        smallestPositive = lst[i];\n      }\n    }\n  }\n\n  return [largestNegative, smallestPositive];\n};\n",
+            "canonical_solution": "\nconst largestSmallestIntegers = (lst) => {\n  let a = Infinity\n  let b = -Infinity\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] > 0 && lst[i] < a) { a = lst[i] }\n    if (lst[i] < 0 && lst[i] > b) { b = lst[i] }\n  }\n  if (a == Infinity) { a = null }\n  if (b == -Infinity) { b = null }\n  return (b, a)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "136"
+        },
+        {
+            "pass": true,
+            "program": "\nconst meanAbsoluteDeviation = (numbers) => {\n\n  const mean = numbers.reduce((a, b) => a + b) / numbers.length;\n  const deviations = numbers.map((x) => Math.abs(x - mean));\n  return deviations.reduce((a, b) => a + b) / deviations.length;\n};\n\nmodule.exports = meanAbsoluteDeviation;\n",
+            "canonical_solution": "\nconst meanAbsoluteDeviation = (numbers) => {\n  var mean = numbers.reduce((prev, item) => {\n    return prev + item;\n  }, 0) / numbers.length;\n  return numbers.reduce((prev, item) => {\n    return prev + Math.abs(item - mean);\n  }, 0) / numbers.length;\n\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "4"
+        },
+        {
+            "pass": true,
+            "program": "\nconst countUpTo = (n) => {\n\n  const primeNumbers = [];\n  for (let i = 2; i < n; i++) {\n    if (isPrime(i)) {\n      primeNumbers.push(i);\n    }\n  }\n  return primeNumbers;\n};\n\nconst isPrime = (n) => {\n  if (n <= 1) {\n    return false;\n  }\n  for (let i = 2; i < n; i++) {\n    if (n % i === 0) {\n      return false;\n    }\n  }\n  return true;\n};\n",
+            "canonical_solution": "\nconst countUpTo = (n) => {\n  let t = []\n  for (let i = 2; i < n; i++) {\n    let p = 1\n    for (let j = 2; j * j <= i; j++) {\n      if (i % j == 0) { p = 0; break }\n    }\n    if (p == 1) { t.push(i) }\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "96"
+        },
+        {
+            "pass": false,
+            "program": "\nconst xOrY = (n, x, y) => {\n\n  if (n % 2 == 0) {\n    return y;\n  } else {\n    return x;\n  }\n};\n",
+            "canonical_solution": "\nconst xOrY = (n, x, y) => {\n  let len = n\n  if (len == 1 || len == 0) { return y }\n  for (let i = 2; i * i <= len; i++) {\n    if (len % i == 0) { return y }\n  }\n  return x\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "150"
+        },
+        {
+            "pass": false,
+            "program": "\nconst carRaceCollision = (n) => {\n\n  let collisions = 0;\n  for (let i = 1; i <= n; i++) {\n    if (i % 2 === 0) {\n      collisions++;\n    }\n  }\n  return collisions;\n};\n",
+            "canonical_solution": "\nconst carRaceCollision = (n) => {\n  return Math.pow(n, 2);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "41"
+        },
+        {
+            "pass": true,
+            "program": "\nconst stringToMd5 = (text) => {\n\n  if (text === '') {\n    return null;\n  }\n  const crypto = require('crypto');\n  return crypto.createHash('md5').update(text).digest('hex');\n};\n\nmodule.exports = stringToMd5;\n",
+            "canonical_solution": "\nconst stringToMd5 = (text) => {\n  if (text == '') { return null }\n  var md5 = require('js-md5')\n  return md5(text)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "162"
+        },
+        {
+            "pass": true,
+            "program": "\nconst sumSquares = (lst) => {\n\n  let newList = lst.map((num) => Math.ceil(num));\n  let sum = newList.reduce((acc, curr) => acc + curr ** 2, 0);\n  return sum;\n};\n",
+            "canonical_solution": "\nconst sumSquares = (lst) => {\n  let p = 0\n  for (let i = 0; i < lst.length; i++) {\n    let y = lst[i]\n    if (y % 1 != 0) {\n      if (y > 0) { y = y - y % 1 + 1 }\n      else { y = -y; y = y - y % 1 }\n    }\n    p += y * y\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "133"
+        },
+        {
+            "pass": false,
+            "program": "\nconst wordsString = (s) => {\n\n  return s.split(/[\\s,]+/);\n}\n",
+            "canonical_solution": "\nconst wordsString = (s) => {\n  let t = ''\n  let p = []\n  let k = 0\n  for (let i = 0; i < s.length; i++) {\n    if (s[i] == ' ' || s[i] == ',') {\n      if (k == 0) {\n        k = 1;\n        p.push(t);\n        t = '';\n      }\n    }\n    else {\n      k = 0;\n      t += s[i]\n    }\n  }\n  if (t != '') {\n    p.push(t);\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "101"
+        },
+        {
+            "pass": false,
+            "program": "\nconst skjkasdkd = (lst) => {\n\n  let max = 0;\n  let sum = 0;\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] > max) {\n      max = lst[i];\n    }\n  }\n  let prime = max;\n  for (let i = 2; i < prime; i++) {\n    if (prime % i === 0) {\n      prime = prime / i;\n      i = 1;\n    }\n  }\n  let str = prime.toString();\n  for (let i = 0; i < str.length; i++) {\n    sum += Number(str[i]);\n  }\n  return sum;\n};\n",
+            "canonical_solution": "\nconst skjkasdkd = (lst) => {\n  let t = 0\n  for (let i = 0; i < lst.length; i++) {\n    let p = 1\n    for (let j = 2; j * j <= lst[i]; j++) {\n      if (lst[i] % j == 0) { p = 0; break }\n    }\n    if (p == 1 && lst[i] > t) { t = lst[i] }\n  }\n  let k = 0\n  while (t != 0) {\n    k += t % 10\n    t = (t - t % 10) / 10\n  }\n  return k\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "94"
+        },
+        {
+            "pass": true,
+            "program": "\nconst getMaxTriples = (n) => {\n\n  const a = [];\n  for (let i = 1; i <= n; i++) {\n    a.push(i * i - i + 1);\n  }\n  let count = 0;\n  for (let i = 0; i < n; i++) {\n    for (let j = i + 1; j < n; j++) {\n      for (let k = j + 1; k < n; k++) {\n        if ((a[i] + a[j] + a[k]) % 3 === 0) {\n          count++;\n        }\n      }\n    }\n  }\n  return count;\n};\n",
+            "canonical_solution": "\nconst getMaxTriples = (n) => {\n  let y = []\n  for (let i = 1; i <= n; i++) {\n    y.push(i * i - i + 1)\n  }\n  let u = 0\n  for (let i = 0; i < n - 2; i++) {\n    for (let j = i + 1; j < n - 1; j++) {\n      for (let k = j + 1; k < n; k++) {\n        if ((y[i] + y[j] + y[k]) % 3 == 0) { u++ }\n      }\n    }\n  }\n  return u\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "147"
+        },
+        {
+            "pass": false,
+            "program": "\nconst encrypt = (s) => {\n\n  let alphabet = 'abcdefghijklmnopqrstuvwxyz';\n  let encrypted = '';\n  for (let i = 0; i < s.length; i++) {\n    let index = alphabet.indexOf(s[i]);\n    if (index !== -1) {\n      index += 2;\n      if (index > 25) {\n        index -= 26;\n      }\n      encrypted += alphabet[index];\n    } else {\n      encrypted += s[i];\n    }\n  }\n  return encrypted;\n};\n",
+            "canonical_solution": "\nconst encrypt = (s) => {\n  let t = ''\n  for (let i = 0; i < s.length; i++) {\n    let p = s[i].charCodeAt() + 4\n    if (p > 122) { p -= 26 }\n    t += String.fromCharCode(p)\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "89"
+        },
+        {
+            "pass": true,
+            "program": "\nconst isPrime = (n) => {\n\n  if (n < 2) {\n    return false;\n  }\n  for (let i = 2; i <= Math.sqrt(n); i++) {\n    if (n % i === 0) {\n      return false;\n    }\n  }\n  return true;\n};\n",
+            "canonical_solution": "\nconst isPrime = (n) => {\n  if (n < 2)\n    return false;\n  for (let k = 2; k < n - 1; k++)\n    if (n % k == 0)\n      return false;\n  return true;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "31"
+        },
+        {
+            "pass": false,
+            "program": "\nconst sortArray = (arr) => {\n\n  const binary = arr.map((num) => num.toString(2));\n  const sorted = binary.sort((a, b) => {\n    if (a.length === b.length) {\n      return a - b;\n    }\n    return a.length - b.length;\n  });\n  return sorted.map((num) => parseInt(num, 2));\n};\n\nmodule.exports = sortArray;\n",
+            "canonical_solution": "\nconst sortArray = (arr) => {\n  let p = arr\n  for (let j = 0; j < p.length; j++) {\n    let ind = j\n    for (let k = j + 1; k < p.length; k++) {\n      let w1 = p[ind].toString(2)\n      let f1 = 0\n      for (let u = 0; u < w1.length; u++) {\n        if (w1[u] == '1') { f1++ }\n      }\n      let w2 = p[k].toString(2)\n      let f2 = 0\n      for (let u = 0; u < w2.length; u++) {\n        if (w2[u] == '1') { f2++ }\n      }\n      if (f2 < f1 || (f1 == f2 && p[k] < p[ind])) {\n        ind = k\n      }\n    }\n    if (ind > j) {\n      let tmp = p[j]\n      p[j] = p[ind]\n      p[ind] = tmp\n    }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "116"
+        },
+        {
+            "pass": true,
+            "program": "\nconst rescaleToUnit = (numbers) => {\n\n  const min = Math.min(...numbers);\n  const max = Math.max(...numbers);\n  return numbers.map((num) => (num - min) / (max - min));\n};\n\nmodule.exports = rescaleToUnit;\n",
+            "canonical_solution": "\nconst rescaleToUnit = (numbers) => {\n  var min_number = Math.min(...numbers);\n  var max_number = Math.max(...numbers);\n  return numbers.map(x => (x - min_number) / (max_number - min_number));\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "21"
+        },
+        {
+            "pass": true,
+            "program": "\nconst addElements = (arr, k) => {\n\n  let sum = 0;\n  for (let i = 0; i < k; i++) {\n    const num = arr[i];\n    const digits = num.toString().length;\n    if (digits <= 2) {\n      sum += num;\n    }\n  }\n  return sum;\n};\n",
+            "canonical_solution": "\nconst addElements = (arr, k) => {\n  let p = 0\n  for (let i = 0; i < k; i++) {\n    if (arr[i] < 100 && arr[i] > -100) { p += arr[i] }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "122"
+        },
+        {
+            "pass": true,
+            "program": "\nconst rollingMax = (numbers) => {\n\n  const result = [];\n  let max = numbers[0];\n  for (let i = 0; i < numbers.length; i++) {\n    if (numbers[i] > max) {\n      max = numbers[i];\n    }\n    result.push(max);\n  }\n  return result;\n};\n\nmodule.exports = rollingMax;\n",
+            "canonical_solution": "\nconst rollingMax = (numbers) => {\n  var running_max, result = [];\n  for (const n of numbers) {\n    if (running_max == undefined)\n      running_max = n;\n    else\n      running_max = Math.max(running_max, n);\n    result.push(running_max);\n  }\n  return result;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "9"
+        },
+        {
+            "pass": false,
+            "program": "\nconst primeLength = (string) => {\n\n  const isPrime = (num) => {\n    for (let i = 2; i < num; i++) {\n      if (num % i === 0) {\n        return false;\n      }\n    }\n    return true;\n  };\n  return isPrime(string.length);\n};\n",
+            "canonical_solution": "\nconst primeLength = (string) => {\n  let len = string.length\n  if (len == 1 || len == 0) { return false }\n  for (let i = 2; i * i <= len; i++) {\n    if (len % i == 0) { return false }\n  }\n  return true\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "82"
+        },
+        {
+            "pass": false,
+            "program": "\nconst unique = (l) => {\n\n  return l.sort().filter((v, i, a) => {\n    return i === 0 || v !== a[i - 1];\n  });\n};\n\nexport default unique;\n",
+            "canonical_solution": "\nconst unique = (l) => {\n  return Array.from(new Set(l)).sort((a, b) => (a - b));\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "34"
+        },
+        {
+            "pass": false,
+            "program": "\nconst add = (lst) => {\n\n  let sum = 0;\n  for (let i = 0; i < lst.length; i++) {\n    if (i % 2 === 0) {\n      sum += lst[i];\n    }\n  }\n  return sum;\n};\n",
+            "canonical_solution": "\nconst add = (lst) => {\n  let t = 0\n  for (let i = 1; i < lst.length; i += 2) {\n    if (lst[i] % 2 == 0) {\n      t += lst[i]\n    }\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "85"
+        },
+        {
+            "pass": false,
+            "program": "\nconst specialFilter = (nums) => {\n\n    let count = 0;\n    for (let i = 0; i < nums.length; i++) {\n        if (nums[i] > 10 && (nums[i] % 10) % 2 === 1 && (Math.floor(nums[i] / 10)) % 2 === 1) {\n            count++;\n        }\n    }\n    return count;\n}\n",
+            "canonical_solution": "\nconst specialFilter = (nums) => {\n  let p = 0\n  for (let i = 0; i < nums.length; i++) {\n    if (nums[i] < 10) { continue }\n    let y = nums[i].toString()\n    if (Number(y[0]) % 2 == 1 && Number(y[y.length - 1]) % 2 == 1) {\n      p++\n    }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "146"
+        },
+        {
+            "pass": false,
+            "program": "\nconst splitWords = (txt) => {\n\n  if (txt.includes(\" \")) {\n    return txt.split(\" \");\n  } else if (txt.includes(\",\")) {\n    return txt.split(\",\");\n  } else {\n    return txt.split(\"\").filter((char) => char.charCodeAt(0) % 2 === 1).length;\n  }\n};\n",
+            "canonical_solution": "\nconst splitWords = (txt) => {\n  let t = txt.split(/\\s/)\n  if (t.length > 1) {\n    return t\n  } else {\n    t = txt.split(/,/)\n    if (t.length > 1) {\n      return t\n    } else {\n      let p = 0\n      for (let i = 0; i < txt.length; i++) {\n        let m = txt[i].charCodeAt()\n        if (m >= 97 && m <= 122 && m % 2 == 0) {\n          p++\n        }\n      }\n      return p\n    }\n  }\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "125"
+        },
+        {
+            "pass": true,
+            "program": "\nconst median = (l) => {\n\n  const sorted = l.sort((a, b) => a - b);\n  const half = Math.floor(sorted.length / 2);\n  if (sorted.length % 2 === 0) {\n    return (sorted[half - 1] + sorted[half]) / 2;\n  }\n  return sorted[half];\n};\n\nmodule.exports = median;\n",
+            "canonical_solution": "\nconst median = (l) => {\n  l.sort((a, b) => a - b);\n  var len = l.length;\n  if (l.length % 2 == 1)\n    return l[Math.floor(len / 2)];\n  else\n    return (l[len / 2 - 1] + l[len / 2]) / 2.0;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "47"
+        },
+        {
+            "pass": false,
+            "program": "\nconst findClosestElements = (numbers) => {\n\n  let minDiff = Number.MAX_VALUE;\n  let minDiffIndex = -1;\n  let minDiffIndex2 = -1;\n  for (let i = 0; i < numbers.length; i++) {\n    for (let j = i + 1; j < numbers.length; j++) {\n      const diff = Math.abs(numbers[i] - numbers[j]);\n      if (diff < minDiff) {\n        minDiff = diff;\n        minDiffIndex = i;\n        minDiffIndex2 = j;\n      }\n    }\n  }\n  return [numbers[minDiffIndex], numbers[minDiffIndex2]];\n};\n\nmodule.exports = findClosestElements;\n",
+            "canonical_solution": "\nconst findClosestElements = (numbers) => {\n  var closest_pair, distance;\n  for (let i = 0; i < numbers.length; i++)\n    for (let j = 0; j < numbers.length; j++)\n      if (i != j) {\n        let a = numbers[i], b = numbers[j];\n        if (distance == null) {\n          distance = Math.abs(a - b);\n          closest_pair = [Math.min(a, b), Math.max(a, b)];\n        } else {\n          let new_distance = Math.abs(a - b);\n          if (new_distance < distance) {\n            distance = new_distance;\n            closest_pair = [Math.min(a, b), Math.max(a, b)];\n          }\n        }\n      }\n  return closest_pair;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "20"
+        },
+        {
+            "pass": false,
+            "program": "\nconst fileNameCheck = (file_name) => {\n\n  const regex = /^[a-zA-Z][a-zA-Z0-9]{0,2}\\.[a-zA-Z]{3}$/;\n  return regex.test(file_name) ? 'Yes' : 'No';\n};\n",
+            "canonical_solution": "\nconst fileNameCheck = (file_name) => {\n  let t = file_name.split(/\\./)\n  if (t.length != 2) { return 'No' }\n  if (t[1] != 'txt' && t[1] != 'dll' && t[1] != 'exe') { return 'No' }\n  if (t[0] == '') { return 'No' }\n  let a = t[0][0].charCodeAt()\n  if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122))) { return 'No' }\n  let y = 0\n  for (let i = 1; i < t[0].length; i++) {\n    if (t[0][i].charCodeAt() >= 48 && t[0][i].charCodeAt() <= 57) { y++ }\n    if (y > 3) { return 'No' }\n  }\n  return 'Yes'\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "141"
+        },
+        {
+            "pass": false,
+            "program": "\nconst numericalLetterGrade = (grades) => {\n\n  const letterGrades = [];\n  const gradeTable = [\n    { gpa: 4.0, letter: 'A+' },\n    { gpa: 3.7, letter: 'A' },\n    { gpa: 3.3, letter: 'A-' },\n    { gpa: 3.0, letter: 'B+' },\n    { gpa: 2.7, letter: 'B' },\n    { gpa: 2.3, letter: 'B-' },\n    { gpa: 2.0, letter: 'C+' },\n    { gpa: 1.7, letter: 'C' },\n    { gpa: 1.3, letter: 'C-' },\n    { gpa: 1.0, letter: 'D+' },\n    { gpa: 0.7, letter: 'D' },\n    { gpa: 0.0, letter: '",
+            "canonical_solution": "\nconst numericalLetterGrade = (grades) => {\n  let letter_grade = []\n  for (let i = 0, len = grades.length; i < len; i++) {\n    let gpa = grades[i]\n    if (gpa == 4.0) {\n      letter_grade.push('A+')\n    } else if (gpa > 3.7) {\n      letter_grade.push('A')\n    } else if (gpa > 3.3) {\n      letter_grade.push('A-')\n    } else if (gpa > 3.0) {\n      letter_grade.push('B+')\n    } else if (gpa > 2.7) {\n      letter_grade.push('B')\n    } else if (gpa > 2.3) {\n      letter_grade.push('B-')\n    } else if (gpa > 2.0) {\n      letter_grade.push('C+')\n    } else if (gpa > 1.7) {\n      letter_grade.push('C')\n    } else if (gpa > 1.3) {\n      letter_grade.push('C-')\n    } else if (gpa > 1.0) {\n      letter_grade.push('D+')\n    } else if (gpa > 0.7) {\n      letter_grade.push('D')\n    } else if (gpa > 0.0) {\n      letter_grade.push('D-')\n    } else {\n      letter_grade.push('E')\n    }\n  }\n  return letter_grade\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "81"
+        },
+        {
+            "pass": true,
+            "program": "\nconst selectWords = (s, n) => {\n\n  const words = s.split(\" \");\n  const result = [];\n  for (let i = 0; i < words.length; i++) {\n    if (words[i].replace(/[aeiou]/gi, \"\").length === n) {\n      result.push(words[i]);\n    }\n  }\n  return result;\n};\n",
+            "canonical_solution": "\nconst selectWords = (s, n) => {\n  let t = s.split(/\\s/)\n  if (s == '') { return [] }\n  let k = []\n  for (let i = 0; i < t.length; i++) {\n    let l = 0\n    for (let j = 0; j < t[i].length; j++) {\n      if (t[i][j] != 'a' && t[i][j] != 'e' && t[i][j] != 'i' && t[i][j] != 'o' && t[i][j] != 'u' && t[i][j] != 'A' &&\n        t[i][j] != 'U' && t[i][j] != 'O' && t[i][j] != 'I' && t[i][j] != 'E') {\n        l++\n      }\n    }\n    if (l == n) { k.push(t[i]) }\n  }\n  return k\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "117"
+        },
+        {
+            "pass": false,
+            "program": "\nconst rightAngleTriangle = (a, b, c) => {\n\n  if (a ** 2 + b ** 2 === c ** 2) {\n    return true;\n  }\n  return false;\n};\n\nmodule.exports = rightAngleTriangle;\n",
+            "canonical_solution": "\nconst rightAngleTriangle = (a, b, c) => {\n  return (a * a + b * b == c * c || a * a == b * b + c * c || b * b == a * a + c * c)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "157"
+        },
+        {
+            "pass": true,
+            "program": "\nconst sumSquares = (lst) => {\n\n  let sum = 0;\n  for (let i = 0; i < lst.length; i++) {\n    if (i % 3 === 0) {\n      sum += lst[i] ** 2;\n    } else if (i % 4 === 0 && i % 3 !== 0) {\n      sum += lst[i] ** 3;\n    } else {\n      sum += lst[i];\n    }\n  }\n  return sum;\n};\n",
+            "canonical_solution": "\nconst sumSquares = (lst) => {\n  let y = 0\n  for (let i = 0; i < lst.length; i++) {\n    if (i % 3 == 0) { y += lst[i] * lst[i] }\n    else if (i % 4 == 0) { y += lst[i] * lst[i] * lst[i] }\n    else { y += lst[i] }\n  }\n  return y\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "142"
+        },
+        {
+            "pass": false,
+            "program": "\nconst isSorted = (lst) => {\n\n  let sorted = true;\n  for (let i = 0; i < lst.length - 1; i++) {\n    if (lst[i] > lst[i + 1]) {\n      sorted = false;\n      break;\n    }\n  }\n  return sorted;\n};\n",
+            "canonical_solution": "\nconst isSorted = (lst) => {\n  if (lst.length == 0) { return true }\n  let dup = 1\n  let pre = lst[0]\n  for (let i = 1; i < lst.length; i++) {\n    if (lst[i] < pre) { return false }\n    if (lst[i] == pre) {\n      dup += 1;\n      if (dup == 3) { return false }\n    } else {\n      pre = lst[i]\n      dup = 1\n    }\n  }\n  return true\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "126"
+        },
+        {
+            "pass": false,
+            "program": "\nconst makeAPile = (n) => {\n\n  const result = [];\n  for (let i = 0; i < n; i++) {\n    result.push(i + 1);\n  }\n  return result;\n};\n\nmodule.exports = makeAPile;\n",
+            "canonical_solution": "\nconst makeAPile = (n) => {\n  let t = []\n  for (let i = n; i < n * 3; i += 2) {\n    t.push(i)\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "100"
+        },
+        {
+            "pass": false,
+            "program": "\nconst oddCount = (lst) => {\n\n  return lst.map((str) => {\n    let count = 0;\n    for (let i = 0; i < str.length; i++) {\n      if (str[i] % 2 !== 0) {\n        count++;\n      }\n    }\n    return `the number of odd elements ${count}n the str${str.length}ng ${str.length} of the ${str.length}nput.`;\n  });\n};\n",
+            "canonical_solution": "\nconst oddCount = (lst) => {\n  let d = []\n  for (let i = 0; i < lst.length; i++) {\n    let p = 0;\n    let h = lst[i].length\n    for (let j = 0; j < h; j++) {\n      if (lst[i][j].charCodeAt() % 2 == 1) { p++ }\n    }\n    p = p.toString()\n    d.push('the number of odd elements ' + p + 'n the str' + p + 'ng ' + p + ' of the ' + p + 'nput.')\n  }\n  return d\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "113"
+        },
+        {
+            "pass": false,
+            "program": "\nconst histogram = (test) => {\n\n  const arr = test.split(' ');\n  const obj = {};\n  arr.forEach((letter) => {\n    if (obj[letter]) {\n      obj[letter] += 1;\n    } else {\n      obj[letter] = 1;\n    }\n  });\n  return obj;\n};\n\nmodule.exports = histogram;\n",
+            "canonical_solution": "\nconst histogram = (test) => {\n  let d = {}\n  let t = test.split(/\\s/)\n  if (test == '') { t = [] }\n  for (m in t) {\n    if (t[m] in d) {\n      d[t[m]]++\n    }\n    else {\n      d[t[m]] = 1\n    }\n  }\n  s = Object.keys(d).sort(function (a, b) { return - d[a] + d[b]; });\n  if (s.length == 0) { return {} }\n  let g = d[s[0]]\n  let l = {}\n  for (let ss=0; ss<s.length; ss++) {\n    if (d[s[ss]] == g) {\n      l[s[ss]] = d[s[ss]]\n    }\n  }\n  return l\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "111"
+        },
+        {
+            "pass": false,
+            "program": "\nconst countUpper = (s) => {\n\n  let count = 0;\n  for (let i = 0; i < s.length; i++) {\n    if (i % 2 === 0 && s[i] === s[i].toUpperCase()) {\n      count++;\n    }\n  }\n  return count;\n};\n\nmodule.exports = countUpper;\n",
+            "canonical_solution": "\nconst countUpper = (s) => {\n  let p = 0\n  for (let i = 0; i < s.length; i += 2) {\n    if (s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U') { p++ }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "98"
+        },
+        {
+            "pass": true,
+            "program": "\nconst filterByPrefix = (strings, prefix) => {\n\n  return strings.filter(string => string.startsWith(prefix));\n};\n",
+            "canonical_solution": "\nconst filterByPrefix = (strings, prefix) => {\n  return strings.filter(x => x.startsWith(prefix));\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "29"
+        },
+        {
+            "pass": true,
+            "program": "\nconst solve = (N) => {\n\n  let sum = 0;\n  while (N > 0) {\n    sum += N % 10;\n    N = Math.floor(N / 10);\n  }\n  return sum.toString(2);\n};\n\nmodule.exports = solve;\n",
+            "canonical_solution": "\nconst solve = (N) => {\n  let t = 0\n  while (N > 0) {\n    t += N % 10\n    N = (N - N % 10) / 10\n  }\n  return t.toString(2)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "84"
+        },
+        {
+            "pass": true,
+            "program": "\nconst matchParens = (lst) => {\n\n  let result = 'Yes';\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] === '(') {\n      if (lst[i + 1] === ')') {\n        lst.splice(i, 2);\n        i = -1;\n      }\n    }\n  }\n  if (lst.length > 0) {\n    result = 'No';\n  }\n  return result;\n};\n\nmodule.exports = matchParens;\n",
+            "canonical_solution": "\nconst matchParens = (lst) => {\n  let w1 = lst[0] + lst[1]\n  let y = 0\n  let u = 1\n  for (let i = 0; i < w1.length; i++) {\n    if (w1[i] == '(') { y++ }\n    else { y-- }\n    if (y < 0) {\n      u = 0;\n      break;\n    }\n  }\n  if (u == 1 && y == 0) { return 'Yes' }\n  w1 = lst[1] + lst[0]\n  y = 0\n  u = 1\n  for (let i = 0; i < w1.length; i++) {\n    if (w1[i] == '(') { y++ }\n    else { y-- }\n    if (y < 0) {\n      u = 0;\n      break;\n    }\n  }\n  if (u == 1 && y == 0) { return 'Yes' }\n  return 'No'\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "119"
+        },
+        {
+            "pass": false,
+            "program": "\nconst strongestExtension = (class_name, extensions) => {\n\n  let strongest = 0;\n  let strongest_extension = '';\n  for (let i = 0; i < extensions.length; i++) {\n    let cap = 0;\n    let sm = 0;\n    for (let j = 0; j < extensions[i].length; j++) {\n      if (extensions[i][j] === extensions[i][j].toUpperCase()) {\n        cap++;\n      } else {\n        sm++;\n      }\n    }\n    let strength = cap - sm;\n    if (strength > strongest) {\n      strongest = strength;\n      strongest_extension = extensions[i];\n    } else if (strength === strongest) {\n      if (extensions[i] < strongest_extension) {\n        strongest_extension = extensions[i];\n      }\n    }\n  }\n  return class_name + '.' + strongest_extension;\n",
+            "canonical_solution": "\nconst strongestExtension = (class_name, extensions) => {\n  let u = 0\n  let s = -Infinity\n  for (let i = extensions.length - 1; i >= 0; i--) {\n    let y = 0\n    for (let j = 0; j < extensions[i].length; j++) {\n      let k = extensions[i][j].charCodeAt()\n      if (k >= 65 && k <= 90) { y += 1 }\n      if (k >= 97 && k <= 122) { y -= 1 }\n    }\n    if (y >= s) {\n      s = y;\n      u = i;\n    }\n  }\n  return class_name + '.' + extensions[u]\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "153"
+        },
+        {
+            "pass": false,
+            "program": "\nconst nextSmallest = (lst) => {\n\n  if (lst.length < 2) return null;\n  let smallest = lst[0];\n  let secondSmallest = null;\n  for (let i = 1; i < lst.length; i++) {\n    if (lst[i] < smallest) {\n      secondSmallest = smallest;\n      smallest = lst[i];\n    } else if (lst[i] < secondSmallest) {\n      secondSmallest = lst[i];\n    }\n  }\n  return secondSmallest;\n};\n",
+            "canonical_solution": "\nconst nextSmallest = (lst) => {\n  let arr = lst\n  for (let j = 0; j < arr.length; j++) {\n    let ind = j\n    for (let k = j + 1; k < arr.length; k++) {\n      if (arr[k] < arr[ind]) {\n        ind = k\n      }\n    }\n    let tmp = arr[j]\n    arr[j] = arr[ind]\n    arr[ind] = tmp\n  }\n  let smallest = arr[0]\n  let pt = 1\n  while(pt<arr.length){\n    if(arr[pt]>smallest){\n      return arr[pt]\n    }\n    pt++\n  }\n  return null\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "90"
+        },
+        {
+            "pass": true,
+            "program": "\nconst largestDivisor = (n) => {\n\n  for (let i = n - 1; i > 0; i--) {\n    if (n % i === 0) {\n      return i;\n    }\n  }\n  return 1;\n};\n\nmodule.exports = largestDivisor;\n",
+            "canonical_solution": "\nconst largestDivisor = (n) => {\n  for (let i = n - 1; i >= 0; i--)\n    if (n % i == 0)\n      return i;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "24"
+        },
+        {
+            "pass": false,
+            "program": "\nconst smallestChange = (arr) => {\n\n  let left = 0;\n  let right = arr.length - 1;\n  let count = 0;\n\n  while (left < right) {\n    if (arr[left] !== arr[right]) {\n      if (arr[left] === arr[left + 1]) {\n        arr[right] = arr[left];\n        left++;\n      } else if (arr[right] === arr[right - 1]) {\n        arr[left] = arr[right];\n        right--;\n      } else {\n        arr[left] = arr[right];\n        arr[right] = arr[left];\n        left++;\n        right--;\n      }\n      count++;\n    }\n    left++;\n    right--;\n  }\n  return count;\n};\n\nmodule.exports = smallestChange;\n",
+            "canonical_solution": "\nconst smallestChange = (arr) => {\n  var ans = 0;\n  for (let i = 0; i < Math.floor(arr.length / 2); i++)\n    if (arr[i] != arr.at(-i - 1))\n      ans++;\n  return ans;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "73"
+        },
+        {
+            "pass": true,
+            "program": "\nconst fib4 = (n) => {\n\n  if (n < 0) {\n    return -1;\n  }\n  if (n === 0) {\n    return 0;\n  }\n  if (n === 1) {\n    return 0;\n  }\n  if (n === 2) {\n    return 2;\n  }\n  if (n === 3) {\n    return 0;\n  }\n  let fib4 = [0, 0, 2, 0];\n  for (let i = 4; i <= n; i++) {\n    fib4.push(fib4[i - 1] + fib4[i - 2] + fib4[i - 3] + fib4[i - 4]);\n  }\n  return fib4[n];\n};\n",
+            "canonical_solution": "\nconst fib4 = (n) => {\n  var results = [0, 0, 2, 0];\n  if (n < 4)\n    return results[n];\n  for (let i = 4; i < n + 1; i++) {\n    results.push(results.at(-1) + results.at(-2) +\n                results.at(-3) + results.at(-4));\n    results.shift();\n  }\n  return results.pop();\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "46"
+        },
+        {
+            "pass": true,
+            "program": "\nconst decimalToBinary = (decimal) => {\n\n  let binary = decimal.toString(2);\n  let binaryString = \"db\" + binary + \"db\";\n  return binaryString;\n};\n",
+            "canonical_solution": "\nconst decimalToBinary = (decimal) => {\n  return \"db\" + decimal.toString(2) + \"db\";\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "79"
+        },
+        {
+            "pass": false,
+            "program": "\nconst isHappy = (s) => {\n\n  if (s.length < 3) return false;\n  let arr = s.split(\"\");\n  let count = 0;\n  for (let i = 0; i < arr.length; i++) {\n    if (arr[i] === arr[i + 1] && arr[i] === arr[i + 2]) {\n      count++;\n    }\n  }\n  if (count === 0) return true;\n  else return false;\n};",
+            "canonical_solution": "\nconst isHappy = (s) => {\n  if (s.length < 3)\n    return false;\n  for (let i = 0; i < s.length - 2; i++)\n    if (s[i] == s[i+1] || s[i+1] == s[i+2] || s[i] == s[i+2])\n      return false;\n  return true;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "80"
+        },
+        {
+            "pass": true,
+            "program": "\nconst f = (n) => {\n\n  let result = [];\n  for (let i = 1; i <= n; i++) {\n    if (i % 2 === 0) {\n      let factorial = 1;\n      for (let j = 1; j <= i; j++) {\n        factorial *= j;\n      }\n      result.push(factorial);\n    } else {\n      let sum = 0;\n      for (let j = 1; j <= i; j++) {\n        sum += j;\n      }\n      result.push(sum);\n    }\n  }\n  return result;\n};\n\nmodule.exports = f;\n",
+            "canonical_solution": "\nconst f = (n) => {\n  let f = 1\n  let p = 0\n  let k = []\n  for (let i = 1; i <= n; i++) {\n    p += i;\n    f *= i;\n    if (i % 2 == 0) { k.push(f) }\n    else { k.push(p) }\n  }\n  return k\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "106"
+        },
+        {
+            "pass": false,
+            "program": "\nconst sortEven = (l) => {\n\n  let lPrime = [];\n  for (let i = 0; i < l.length; i++) {\n    if (i % 2 === 0) {\n      lPrime.push(l[i]);\n    } else {\n      lPrime.push(l[i]);\n    }\n  }\n  return lPrime;\n};\n",
+            "canonical_solution": "\nconst sortEven = (l) => {\n  var even = l.filter((item, index) => index % 2 == 0);\n  even.sort((a, b) => (a - b));\n  return l.map((item, index) => (index % 2 == 0 ? even[index / 2] : item));\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "37"
+        },
+        {
+            "pass": false,
+            "program": "\nconst doAlgebra = (operator, operand) => {\n\n  let result = operand[0];\n  for (let i = 1; i < operand.length; i++) {\n    result = operate(operator[i - 1], result, operand[i]);\n  }\n  return result;\n};\n\nconst operate = (operator, a, b) => {\n  switch (operator) {\n    case \"+\":\n      return a + b;\n    case \"-\":\n      return a - b;\n    case \"*\":\n      return a * b;\n    case \"/\":\n      return Math.floor(a / b);\n    case \"**\":\n      return a ** b;\n    default:\n      return 0;\n  }\n};\n\nconst operator = [\"+\", \"*\", \"-\"];\nconst operand = [2, 3, 4, 5];\n",
+            "canonical_solution": "\nconst doAlgebra = (operator, operand) => {\n  while (operator.length > 0) {\n    let y = 0\n    for (let i = operator.length - 1; i >= 0; i--) {\n      if (operator[i] == '**') {\n        let u = operand[i]\n        while (operand[i + 1] > 1) {\n          operand[i + 1]--;\n          operand[i] *= u;\n        }\n        operand.splice(i + 1, 1)\n        operator.splice(i, 1)\n        y = 1;\n        break;\n      }\n    }\n    if (y == 1) { continue }\n    for (let i = 0; i < operator.length; i++) {\n      if (operator[i] == '*') {\n        operand[i] *= operand[i + 1]\n        operand.splice(i + 1, 1)\n        operator.splice(i, 1)\n        y = 1;\n        break;\n      }\n      else if (operator[i] == '//') {\n        operand[i] = (operand[i] - operand[i] % operand[i + 1]) / operand[i + 1]\n        operand.splice(i + 1, 1)\n        operator.splice(i, 1)\n        y = 1;\n        break;\n      }\n    }\n    if (y == 1) { continue }\n    for (let i = 0; i < operator.length; i++) {\n      if (operator[i] == '+') {\n        operand[i] += operand[i + 1]\n        operand.splice(i + 1, 1)\n        operator.splice(i, 1)\n        y = 1;\n        break;\n      }\n      else if (operator[i] == '-') {\n        operand[i] -= operand[i + 1]\n        operand.splice(i + 1, 1)\n        operator.splice(i, 1)\n        y = 1;\n        break;\n      }\n    }\n    if (y == 1) { continue }\n  }\n  return operand[0]\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "160"
+        },
+        {
+            "pass": false,
+            "program": "const isPalindrome = (string) => {\n  return string == string.split('').reverse().join('');\n}\n\nconst makePalindrome = (string) => {\n\n  let palindromicSuffix = '';\n  let i = string.length - 1;\n  while (i >= 0 && isPalindrome(string.slice(0, i + 1))) {\n    palindromicSuffix = string.slice(0, i + 1);\n    i--;\n  }\n  return string + palindromicSuffix.split('').reverse().join('');\n}\n",
+            "canonical_solution": "const isPalindrome = (string) => {\n  return string == string.split('').reverse().join('');\n}\n\nconst makePalindrome = (string) => {\n  if (string == '')\n    return '';\n  var beginning_of_suffix = 0;\n  while (!isPalindrome(string.slice(beginning_of_suffix)))\n    beginning_of_suffix += 1;\n  return string + string.slice(0, beginning_of_suffix).split('').reverse().join('');\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "10"
+        },
+        {
+            "pass": true,
+            "program": "\nconst isPalindrome = (text) => {\n\n  if (text.length === 0) {\n    return true;\n  }\n  if (text.length === 1) {\n    return true;\n  }\n  if (text.length === 2) {\n    return text[0] === text[1];\n  }\n  if (text[0] === text[text.length - 1]) {\n    return isPalindrome(text.slice(1, text.length - 1));\n  }\n  return false;\n};\n\nmodule.exports = isPalindrome;\n",
+            "canonical_solution": "\nconst isPalindrome = (text) => {\n  for (let i = 0; i < text.length; i++)\n    if (text[i] != text.at(-i-1))\n      return false;\n  return true;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "48"
+        },
+        {
+            "pass": true,
+            "program": "\nconst stringSequence = (n) => {\n\n  return Array.from(Array(n + 1).keys()).join(' ');\n};\n\nmodule.exports = stringSequence;\n",
+            "canonical_solution": "\nconst stringSequence = (n) => {\n  return [...Array(n).keys(), n].join(' ')\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "15"
+        },
+        {
+            "pass": true,
+            "program": "\nconst pluck = (arr) => {\n\n  if (!arr.length) return [];\n  const even = arr.filter((val) => val % 2 === 0);\n  if (!even.length) return [];\n  const min = Math.min(...even);\n  const index = arr.indexOf(min);\n  return [min, index];\n};\n\nmodule.exports = pluck;\n",
+            "canonical_solution": "\nconst pluck = (arr) => {\n  if (arr.length == 0) return [];\n  var evens = arr.filter(x => x % 2 == 0);\n  if (evens.length == 0) return [];\n  return [Math.min(...evens), arr.indexOf(Math.min(...evens))];\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "68"
+        },
+        {
+            "pass": false,
+            "program": "\nconst common = (l1, l2) => {\n\n  const s1 = new Set(l1);\n  const s2 = new Set(l2);\n  const intersection = new Set([...s1].filter(x => s2.has(x)));\n  return [...intersection];\n};\n",
+            "canonical_solution": "\nconst common = (l1, l2) => {\n  var ret = new Set();\n  for (const e1 of l1)\n    for (const e2 of l2)\n      if (e1 == e2)\n        ret.add(e1);\n  return [...ret].sort();\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "58"
+        },
+        {
+            "pass": false,
+            "program": "\nconst encode = (message) => {\n\n  let encodedMessage = '';\n  for (let i = 0; i < message.length; i++) {\n    let letter = message[i];\n    if (letter === letter.toUpperCase()) {\n      letter = letter.toLowerCase();\n    } else {\n      letter = letter.toUpperCase();\n    }\n    if (letter === 'a') {\n      letter = 'c';\n    } else if (letter === 'e') {\n      letter = 'g';\n    } else if (letter === 'i') {\n      letter = 'k';\n    } else if (letter === 'o') {\n      letter = 's';\n    } else if (letter === 'u') {\n      letter = 'x';\n    }\n    encodedMessage += letter;\n ",
+            "canonical_solution": "\nconst encode = (message) => {\n  let t = ''\n  for (let i = 0; i < message.length; i++) {\n    let p = message[i].charCodeAt()\n    if (p > 96) { p -= 32 }\n    else if (p!=32 && p < 96) { p += 32 }\n    if (p == 65 || p == 97 || p == 69 || p == 101 || p == 73 || p == 105 || p == 79 || p == 111 || p == 85 || p == 117) { p += 2 }\n    t += String.fromCharCode(p)\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "93"
+        },
+        {
+            "pass": false,
+            "program": "\nconst intersperse = (numbers, delimeter) => {\n\n  if (numbers.length === 0) {\n    return [];\n  }\n  return [numbers[0], ...intersperse(numbers.slice(1), delimeter).map((x) => [delimeter, x])].flat();\n};\n",
+            "canonical_solution": "\nconst intersperse = (numbers, delimeter) => {\n  if (!Array.isArray(numbers) || numbers.length == 0)\n    return [];\n  var result = [];\n  for (const n of numbers) {\n    result.push(n, delimeter);\n  }\n  result.pop();\n  return result;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "5"
+        },
+        {
+            "pass": false,
+            "program": "\nconst roundedAvg = (n, m) => {\n\n  if (n > m) return -1;\n  const sum = n + m;\n  const avg = sum / 2;\n  const rounded = Math.round(avg);\n  return rounded.toString(2);\n};\n\nmodule.exports = roundedAvg;\n",
+            "canonical_solution": "\nconst roundedAvg = (n, m) => {\n  if (n > m) { return -1 }\n  let k = (n + m) / 2\n  if (k % 1 != 0) { k = (n + m + 1) / 2 }\n  return '0b' + k.toString(2)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "103"
+        },
+        {
+            "pass": false,
+            "program": "\nconst sortThird = (l) => {\n\n  const lPrime = [];\n  for (let i = 0; i < l.length; i++) {\n    if (i % 3 === 0) {\n      lPrime.push(l[i]);\n    }\n  }\n  for (let i = 1; i < l.length; i++) {\n    if (i % 3 === 1) {\n      lPrime.push(l[i]);\n    }\n  }\n  for (let i = 2; i < l.length; i++) {\n    if (i % 3 === 2) {\n      lPrime.push(l[i]);\n    }\n  }\n  return lPrime;\n};\n\nmodule.exports = sortThird;\n",
+            "canonical_solution": "\nconst sortThird = (l) => {\n  var three = l.filter((item, index) => index % 3 == 0);\n  three.sort((a, b) => (a - b));\n  return l.map((item, index) => (index % 3 == 0 ? three[index / 3] : item));\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "33"
+        },
+        {
+            "pass": false,
+            "program": "\nconst iscube = (a) => {\n\n  const b = Math.pow(a, 1/3);\n  return Math.round(b) === b;\n};\n",
+            "canonical_solution": "\nconst iscube = (a) => {\n  a = Math.abs(a);\n  return (Math.pow(Math.round(Math.pow(a, 1.0 / 3.0)), 3) == a);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "77"
+        },
+        {
+            "pass": true,
+            "program": "\nconst changeBase = (x, base) => {\n\n  const digits = '0123456789ABCDEF';\n  let result = '';\n  do {\n    result = digits[x % base] + result;\n    x = Math.floor(x / base);\n  } while (x > 0);\n  return result;\n};\n",
+            "canonical_solution": "\nconst changeBase = (x, base) => {\n  var ret = \"\";\n  while (x > 0) {\n    ret = (x % base).toString() + ret;\n    x = Math.floor(x / base);\n  }\n  return ret;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "44"
+        },
+        {
+            "pass": false,
+            "program": "\nconst canArrange = (arr) => {\n\n  let maxIndex = -1;\n  for (let i = 0; i < arr.length - 1; i++) {\n    if (arr[i] < arr[i + 1]) {\n      maxIndex = i;\n    }\n  }\n  return maxIndex;\n};\n",
+            "canonical_solution": "\nconst canArrange = (arr) => {\n  if (arr.length == 0) { return -1 }\n  for (let i = arr.length - 1; i > 0; i--) {\n    if (arr[i] < arr[i - 1]) { return i }\n  }\n  return -1\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "135"
+        },
+        {
+            "pass": true,
+            "program": "\nconst triangleArea = (a, h) => {\n\n  return (a * h) / 2;\n};\n",
+            "canonical_solution": "\nconst triangleArea = (a, h) => {\n  return a * h / 2.0;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "45"
+        },
+        {
+            "pass": true,
+            "program": "\nconst longest = (strings) => {\n\n  if (strings.length === 0) {\n    return null;\n  }\n  const longestString = strings.reduce((acc, curr) => {\n    if (acc.length < curr.length) {\n      return curr;\n    }\n    return acc;\n  });\n  return longestString;\n};\n\nmodule.exports = longest;\n",
+            "canonical_solution": "\nconst longest = (strings) => {\n  if (!Array.isArray(strings) || strings.length == 0)\n    return null;\n  var maxlen = Math.max(...strings.map(x => x.length));\n  for (const s of strings) {\n    if (s.length == maxlen) {\n      return s;\n    }\n  }\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "12"
+        },
+        {
+            "pass": false,
+            "program": "\nconst multiply = (a, b) => {\n\n  return Math.abs(a % 10 * b % 10);\n};\n",
+            "canonical_solution": "\nconst multiply = (a, b) => {\n  if (a < 0) { a = -a }\n  if (b < 0) { b = -b }\n  return (a % 10) * (b % 10)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "97"
+        },
+        {
+            "pass": false,
+            "program": "\nconst sortedListSum = (lst) => {\n\n  let sortedList = lst.sort((a, b) => a.length - b.length);\n  let sortedListWithoutOdd = sortedList.filter((word) => word.length % 2 === 0);\n  return sortedListWithoutOdd;\n};\n",
+            "canonical_solution": "\nconst sortedListSum = (lst) => {\n  let p = []\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i].length % 2 == 0) {\n      p.push(lst[i])\n    }\n  }\n  for (let j = p.length - 2; j >= 0; j--) {\n    for (let k = 0; k <= j; k++) {\n      let f = 0\n      if (p[k].length > p[k + 1].length) { f = 1 }\n      if (p[k].length == p[k + 1].length) {\n        let r = p[k].length\n        for (let l = 0; l < r; l++) {\n          if (p[k][l].charCodeAt() > p[k + 1][l].charCodeAt()) {\n            f = 1;\n            break;\n          }\n          if (p[k][l].charCodeAt() < p[k + 1][l].charCodeAt()) {\n            break;\n          }\n        }\n      }\n      if (f == 1) {\n        let tmp = p[k]\n        p[k] = p[k + 1]\n        p[k + 1] = tmp\n      }\n    }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "149"
+        },
+        {
+            "pass": false,
+            "program": "\nconst intToMiniRoman = (number) => {\n\n  const romanNumerals = {\n    M: 1000,\n    D: 500,\n    C: 100,\n    L: 50,\n    X: 10,\n    V: 5,\n    I: 1,\n  };\n\n  let roman = '';\n  let num = number;\n\n  for (let i = 0; i < Object.keys(romanNumerals).length; i++) {\n    const key = Object.keys(romanNumerals)[i];\n    const value = romanNumerals[key];\n\n    while (num - value >= 0) {\n      roman += key;\n      num -= value;\n   ",
+            "canonical_solution": "\nconst intToMiniRoman = (number) => {\n  let num = [1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000]\n  let sym = ['i', 'iv', 'v', 'ix', 'x', 'xl', 'l', 'xc', 'c', 'cd', 'd', 'cm', 'm']\n  let i = 12\n  let res = ''\n  while (number) {\n    let div = (number - number % num[i]) / num[i]\n    number = number % num[i]\n    while (div) {\n      res += sym[i]\n      div -= 1\n    }\n    i -= 1\n  }\n  return res\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "156"
+        },
+        {
+            "pass": true,
+            "program": "\nconst antiShuffle = (s) => {\n\n  const words = s.split(' ');\n  const shuffled = words.map((word) => {\n    return word.split('').sort().join('');\n  });\n  return shuffled.join(' ');\n};\n",
+            "canonical_solution": "\nconst antiShuffle = (s) => {\n  let arr = s.split(/\\s/)\n  for (let i = 0; i < arr.length; i++) {\n    for (let j = 0; j < arr[i].length; j++) {\n      let ind = j\n      for (let k = j + 1; k < arr[i].length; k++) {\n        if (arr[i][k].charCodeAt() < arr[i][ind].charCodeAt()) {\n          ind = k\n        }\n      }\n      if (ind > j) {\n        arr[i] = arr[i].slice(0, j) + arr[i][ind] + arr[i].slice(j + 1, ind) + arr[i][j] + arr[i].slice(ind + 1, arr[i].length)\n      }\n    }\n  }\n  let t = ''\n  for (let i = 0; i < arr.length; i++) {\n    if (i > 0) {\n      t = t + ' '\n    }\n    t = t + arr[i]\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "86"
+        },
+        {
+            "pass": false,
+            "program": "\nconst bf = (planet1, planet2) => {\n\n  const planets = [\n    \"Mercury\",\n    \"Venus\",\n    \"Earth\",\n    \"Mars\",\n    \"Jupiter\",\n    \"Saturn\",\n    \"Uranus\",\n    \"Neptune\",\n  ];\n  const planet1Index = planets.indexOf(planet1);\n  const planet2Index = planets.indexOf(planet2);\n  if (planet1Index === -1 || planet2Index === -1) return [];\n  if (planet1Index > planet2Index) {\n    const temp = planet1Index;\n    planet1Index = planet2Index;\n    planet2Index = temp;\n  }\n  return planets.slice(planet1Index + 1, planet2Index);\n};\n",
+            "canonical_solution": "\nconst bf = (planet1, planet2) => {\n  let y = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']\n  let u = []\n  let lo = -1\n  let hi = -1\n  for (let i = 0; i < 8; i++) {\n    if (y[i] == planet1) { lo = i }\n  }\n  for (let i = 0; i < 8; i++) {\n    if (y[i] == planet2) { hi = i }\n  }\n  if (lo == -1 || hi == -1 || lo == hi) { return [] }\n  if (lo > hi) {\n    let tmp = lo;\n    lo = hi;\n    hi = tmp;\n  }\n  for (let i = lo + 1; i < hi; i++) {\n    u.push(y[i])\n  }\n  return u\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "148"
+        },
+        {
+            "pass": false,
+            "program": "\nconst primeFib = (n) => {\n\n  let fib = [0, 1];\n  let i = 2;\n  while (i <= n) {\n    fib.push(fib[i - 1] + fib[i - 2]);\n    i++;\n  }\n  return fib[n];\n};\n\nmodule.exports = primeFib;\n",
+            "canonical_solution": "\nconst primeFib = (n) => {\n  var isPrime = function (p) {\n    if (p < 2)\n      return false;\n    for (let k = 2; k < Math.min(Math.floor(Math.sqrt(p)) + 1, p - 1); k++) {\n      if (p % k == 0)\n        return false;\n    }\n    return true;\n  }\n\n  var f = [0, 1];\n  while (true) {\n    f.push(f.at(-1) + f.at(-2));\n    if (isPrime(f.at(-1)))\n      n -= 1;\n    if (n == 0)\n      return f.at(-1);\n  }\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "39"
+        },
+        {
+            "pass": false,
+            "program": "\nconst isEqualToSumEven = (n) => {\n\n  let sum = 0;\n  for (let i = 1; i <= n; i++) {\n    if (i % 2 === 0) {\n      sum += i;\n    }\n  }\n  return sum === n;\n};\n\nmodule.exports = isEqualToSumEven;\n",
+            "canonical_solution": "\nconst isEqualToSumEven = (n) => {\n  return (n >= 8 && n % 2 == 0)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "138"
+        },
+        {
+            "pass": false,
+            "program": "\nconst getRow = (lst, x) => {\n\n  const result = [];\n  for (let i = 0; i < lst.length; i++) {\n    const row = lst[i];\n    const index = row.indexOf(x);\n    if (index !== -1) {\n      result.push([i, index]);\n    }\n  }\n  return result.sort((a, b) => {\n    if (a[0] === b[0]) {\n      return b[1] - a[1];\n    }\n    return a[0] - b[0];\n  });\n};\n\nmodule.exports = getRow;\n",
+            "canonical_solution": "\nconst getRow = (lst, x) => {\n  let t = []\n  for (let i = 0; i < lst.length; i++) {\n    for (let j = lst[i].length - 1; j >= 0; j--) {\n      if (lst[i][j] == x) {\n        t.push((i, j))\n      }\n    }\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "87"
+        },
+        {
+            "pass": true,
+            "program": "\nconst compare = (game, guess) => {\n\n  let result = [];\n  for (let i = 0; i < game.length; i++) {\n    result.push(Math.abs(game[i] - guess[i]));\n  }\n  return result;\n};\n",
+            "canonical_solution": "\nconst compare = (game, guess) => {\n  for (let i = 0; i < guess.length; i++) {\n    game[i] -= guess[i]\n if (game[i]<0)\n game[i]=-game[i];  }\n  return game\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "152"
+        },
+        {
+            "pass": true,
+            "program": "\nconst triplesSumToZero = (l) => {\n\n  const len = l.length;\n  if (len < 3) {\n    return false;\n  }\n  for (let i = 0; i < len; i++) {\n    for (let j = i + 1; j < len; j++) {\n      for (let k = j + 1; k < len; k++) {\n        if (l[i] + l[j] + l[k] === 0) {\n          return true;\n        }\n      }\n    }\n  }\n  return false;\n};\n\nmodule.exports = triplesSumToZero;\n",
+            "canonical_solution": "\nconst triplesSumToZero = (l) => {\n  for (let i = 0; i < l.length; i++)\n    for (let j = i + 1; j < l.length; j++)\n      for (let k = j + 1; k < l.length; k++)\n        if (l[i] + l[j] + l[k] == 0)\n          return true;\n  return false;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "40"
+        },
+        {
+            "pass": false,
+            "program": "\nconst separateParenGroups = (paren_string) => {\n\n  const paren_list = paren_string.split(\"\");\n  const result = [];\n  let current_paren_group = \"\";\n  let open_parens = 0;\n\n  for (let i = 0; i < paren_list.length; i++) {\n    if (paren_list[i] === \"(\") {\n      open_parens++;\n      current_paren_group += paren_list[i];\n    } else if (paren_list[i] === \")\") {\n      open_parens--;\n      current_paren_group += paren_list[i];\n    } else {\n      current_paren_group += paren_list[i];\n    }\n\n    if (open_parens === 0) {\n      result.push(current_paren_group);\n      current_paren_group = \"\";\n    }\n  }\n\n  return result;\n};\n",
+            "canonical_solution": "\nconst separateParenGroups = (paren_string) => {\n  var result = [];\n  var current_string = [];\n  var current_depth = 0;\n\n  for (const c of paren_string) {\n    if (c == '(') {\n      current_depth += 1;\n      current_string.push(c);\n    } else if (c == ')') {\n      current_depth -= 1;\n      current_string.push(c);\n      if (current_depth == 0) {\n        result.push(current_string.join(''));\n        current_string = [];\n      }\n    }\n  }\n\n  return result;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "1"
+        },
+        {
+            "pass": false,
+            "program": "\nconst triangleArea = (a, b, c) => {\n\n  if (a + b < c || b + c < a || c + a < b) return -1;\n  const s = (a + b + c) / 2;\n  return Math.sqrt(s * (s - a) * (s - b) * (s - c));\n};\n\nexport default triangleArea;\n",
+            "canonical_solution": "\nconst triangleArea = (a, b, c) => {\n  if (a + b <= c || a + c <= b || b + c <= a)\n    return -1;\n  var s = (a + b + c) / 2;\n  var area = Math.pow(s * (s - a) * (s - b) * (s - c), 0.5);\n  area = area.toFixed(2);\n  return area;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "71"
+        },
+        {
+            "pass": true,
+            "program": "\nconst minSubArraySum = (nums) => {\n\n  let minSum = Infinity;\n  for (let i = 0; i < nums.length; i++) {\n    let sum = 0;\n    for (let j = i; j < nums.length; j++) {\n      sum += nums[j];\n      if (sum < minSum) minSum = sum;\n    }\n  }\n  return minSum;\n};\n",
+            "canonical_solution": "\nconst minSubArraySum = (nums) => {\n  let min = nums[0]\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j <= nums.length; j++) {\n      let s = 0;\n      for (let k = i; k < j; k++) {\n        s += nums[k]\n      }\n      if (s < min) { min = s }\n    }\n  }\n  return min\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "114"
+        },
+        {
+            "pass": false,
+            "program": "\nconst correctBracketing = (brackets) => {\n\n  // your code here\n};\n\nmodule.exports = correctBracketing;\n",
+            "canonical_solution": "\nconst correctBracketing = (brackets) => {\n  var depth = 0;\n  for (const b of brackets) {\n    if (b == \"<\")\n      depth += 1;\n    else\n      depth -= 1;\n    if (depth < 0)\n      return false;\n  }\n  return depth == 0;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "56"
+        },
+        {
+            "pass": false,
+            "program": "\nconst evenOddPalindrome = (n) => {\n\n  let even = 0;\n  let odd = 0;\n\n  for (let i = 1; i <= n; i++) {\n    const str = i.toString();\n    const rev = str.split(\"\").reverse().join(\"\");\n    if (str === rev) {\n      if (str.length % 2 === 0) {\n        even++;\n      } else {\n        odd++;\n      }\n    }\n  }\n\n  return [even, odd];\n};\n",
+            "canonical_solution": "\nconst evenOddPalindrome = (n) => {\n  let e = 0\n  let o = 0\n  for (let i = 1; i <= n; i++) {\n    let k = i.toString()\n    let p = 1\n    for (let j = 0; j < k.length; j++) {\n      if (k[j] != k[k.length - j - 1]) {\n        p = 0;\n        break;\n      }\n    }\n    if (p == 1) {\n      if (k % 2 == 0) { e++ }\n      else { o++ }\n    }\n  }\n  return (e, o)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "107"
+        },
+        {
+            "pass": false,
+            "program": "\nconst evenOddCount = (num) => {\n\n  let even = 0;\n  let odd = 0;\n  let numString = num.toString();\n  for (let i = 0; i < numString.length; i++) {\n    if (numString[i] % 2 === 0) {\n      even++;\n    } else {\n      odd++;\n    }\n  }\n  return [even, odd];\n};\n",
+            "canonical_solution": "\nconst evenOddCount = (num) => {\n  let o = 0\n  let e = 0\n  if (num < 0) { num = -num }\n  while (num > 0) {\n    if (num % 2 == 0) { e++ }\n    else { o++ }\n    num = (num - num % 10) / 10\n  }\n  return (e, o)\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "155"
+        },
+        {
+            "pass": false,
+            "program": "const encodeShift = (s) => {\n  return s.split(\"\").map(ch => String.fromCharCode(\n    ((ch.charCodeAt(0) + 5 - \"a\".charCodeAt(0)) % 26) + \"a\".charCodeAt(0)\n  )).join(\"\");\n}\n\nconst decodeShift = (s) => {\n\n  return s.split(\"\").map(ch => String.fromCharCode(\n    ((ch.charCodeAt(0) - 5 - \"a\".charCodeAt(0)) % 26) + \"a\".charCodeAt(0)\n  )).join(\"\");\n}\n",
+            "canonical_solution": "const encodeShift = (s) => {\n  return s.split(\"\").map(ch => String.fromCharCode(\n    ((ch.charCodeAt(0) + 5 - \"a\".charCodeAt(0)) % 26) + \"a\".charCodeAt(0)\n  )).join(\"\");\n}\n\nconst decodeShift = (s) => {\n  return s.split(\"\").map(ch => String.fromCharCode(\n    ((ch.charCodeAt(0) - 5 + 26 - \"a\".charCodeAt(0)) % 26) + \"a\".charCodeAt(0)\n  )).join(\"\");\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "50"
+        },
+        {
+            "pass": false,
+            "program": "\nconst wordsInSentence = (sentence) => {\n\n  const words = sentence.split(' ');\n  const primeWords = [];\n\n  for (let i = 0; i < words.length; i++) {\n    if (isPrime(words[i].length)) {\n      primeWords.push(words[i]);\n    }\n  }\n\n  return primeWords.join(' ');\n};\n\nconst isPrime = (n) => {\n  if (n <= 1) return false;\n  if (n === 2) return true;\n  if (n % 2 === 0) return false;\n\n  for (let i = 3; i * i <= n; i += 2) {\n    if (n % i === 0) return false;\n  }\n\n  return true;\n};\n\nexport default wordsInSentence;\n",
+            "canonical_solution": "\nconst wordsInSentence = (sentence) => {\n  let t = sentence.split(/\\s/)\n  let p = ''\n  for (let j = 0; j < t.length; j++) {\n    let len = t[j].length;\n    let u = 1\n    if (len == 1 || len == 0) { continue }\n    for (let i = 2; i * i <= len; i++) {\n      if (len % i == 0) { u = 0 }\n    }\n    if (u == 0) { continue }\n    if (p == '') { p += t[j] }\n    else { p = p + ' ' + t[j] }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "143"
+        },
+        {
+            "pass": true,
+            "program": "\nconst solve = (s) => {\n\n  let result = \"\";\n  let isLetter = false;\n  for (let i = 0; i < s.length; i++) {\n    if (s[i] >= \"a\" && s[i] <= \"z\") {\n      isLetter = true;\n      if (s[i] >= \"a\" && s[i] <= \"z\") {\n        result += s[i].toUpperCase();\n      } else {\n        result += s[i].toLowerCase();\n      }\n    } else if (s[i] >= \"A\" && s[i] <= \"Z\") {\n      isLetter = true;\n      if (s[i] >= \"A\" && s[i] <= \"Z\") {\n        result += s[i].toLowerCase();\n      } else {\n        result += s[i].toUpperCase();\n      }\n    } else {\n      result += s[i];\n    }\n  }\n  if (!isLetter) {\n    result = result.split(\"\").reverse().join(\"\");\n  }\n  return result;\n};\n",
+            "canonical_solution": "\nconst solve = (s) => {\n  let t = 0\n  let p = ''\n  for (let i = 0; i < s.length; i++) {\n    let y = s[i].charCodeAt()\n    if (y >= 65 && y <= 90) {\n      y += 32;\n      t = 1;\n    } else if (y >= 97 && y <= 122) {\n      y -= 32;\n      t = 1;\n    }\n    p += String.fromCharCode(y)\n  }\n  if (t == 1) { return p }\n  let u = ''\n  for (let i = 0; i < p.length; i++) {\n    u += p[p.length - i - 1]\n  }\n  return u\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "161"
+        },
+        {
+            "pass": false,
+            "program": "\nconst minPath = (grid, k) => {\n\n  const n = grid.length;\n  const m = grid[0].length;\n  const visited = new Array(n).fill(0).map(() => new Array(m).fill(false));\n  const queue = [];\n  const path = [];\n  let count = 0;\n\n  for (let i = 0; i < n",
+            "canonical_solution": "\nconst minPath = (grid, k) => {\n  let m = 0\n  let n = 0\n  for (let i = 0; i < grid.length; i++) {\n    for (let j = 0; j < grid.length; j++) {\n      if (grid[i][j] == 1) {\n        m = i;\n        n = j;\n        break;\n      }\n    }\n  }\n  let min = grid.length * grid.length\n  if (m > 0 && grid[m - 1][n] < min) { min = grid[m - 1][n] }\n  if (n > 0 && grid[m][n - 1] < min) { min = grid[m][n - 1] }\n  if (m < grid.length - 1 && grid[m + 1][n] < min) { min = grid[m + 1][n] }\n  if (n < grid.length - 1 && grid[m][n + 1] < min) { min = grid[m][n + 1] }\n  let p = []\n  for (let i = 0; i < k; i++) {\n    if (i % 2 == 0) { p.push(1) }\n    else { p.push(min) }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "129"
+        },
+        {
+            "pass": false,
+            "program": "\nconst largestPrimeFactor = (n) => {\n\n  let largest = 0;\n  for (let i = 2; i <= n; i++) {\n    if (n % i === 0) {\n      largest = i;\n    }\n  }\n  return largest;\n};\n\nmodule.exports = largestPrimeFactor;\n",
+            "canonical_solution": "\nconst largestPrimeFactor = (n) => {\n  var isPrime = function (k) {\n    if (k < 2)\n      return false;\n    for (let i = 2; i < k - 1; i++)\n      if (k % i == 0)\n        return false;\n    return true;\n  }\n\n  var largest = 1;\n  for (let j = 2; j < n + 1; j++)\n    if (n % j == 0 && isPrime(j))\n      largest = Math.max(largest, j);\n  return largest;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "59"
+        },
+        {
+            "pass": true,
+            "program": "\nconst fib = (n) => {\n\n  if (n <= 1) return n;\n  return fib(n - 1) + fib(n - 2);\n};\n\nmodule.exports = fib;\n",
+            "canonical_solution": "\nconst fib = (n) => {\n  if (n == 0)\n    return 0;\n  if (n == 1)\n    return 1;\n  return fib(n - 1) + fib(n - 2);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "55"
+        },
+        {
+            "pass": true,
+            "program": "\nconst strlen = (string) => {\n\n  return string.length;\n};\n",
+            "canonical_solution": "\nconst strlen = (string) => {\n  return string.length;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "23"
+        },
+        {
+            "pass": true,
+            "program": "\nconst filterBySubstring = (strings, substring) => {\n\n  return strings.filter(string => string.includes(substring));\n};\n",
+            "canonical_solution": "\nconst filterBySubstring = (strings, substring) => {\n  return strings.filter(x => x.indexOf(substring) != -1);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "7"
+        },
+        {
+            "pass": true,
+            "program": "\nconst sumProduct = (numbers, int) => {\n\n  let sum = 0;\n  let product = 1;\n  for (let i = 0; i < numbers.length; i++) {\n    sum += numbers[i];\n    product *= numbers[i];\n  }\n  return [sum, product];\n};\n",
+            "canonical_solution": "\nconst sumProduct = (numbers, int) => {\n  var sum_value = 0, prod_value = 1;\n  for (const n of numbers) {\n    sum_value += n;\n    prod_value *= n;\n  }\n  return [sum_value, prod_value];\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "8"
+        },
+        {
+            "pass": false,
+            "program": "\nconst countNums = (arr) => {\n\n  let count = 0;\n  for (let i = 0; i < arr.length; i++) {\n    if (arr[i] > 0) {\n      count++;\n    } else if (arr[i] < 0) {\n      let sum = 0;\n      let num = arr[i];\n      while (num !== 0) {\n        sum += Math.abs(num % 10);\n        num = Math.floor(num / 10);\n      }\n      if (sum > 0) {\n        count++;\n      }\n    }\n  }\n  return count;\n};\n",
+            "canonical_solution": "\nconst countNums = (arr) => {\n  let p = 0\n  for (let i = 0; i < arr.length; i++) {\n    let h = arr[i]\n    if (h > 0) {\n      p++;\n      continue;\n    }\n    let k = 0\n    h = -h\n    while (h >= 10) {\n      k += h % 10;\n      h = (h - h % 10) / 10;\n    }\n    k -= h;\n    if (k > 0) { p++ }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "108"
+        },
+        {
+            "pass": true,
+            "program": "\nconst doubleTheDifference = (lst) => {\n\n  let sum = 0;\n  lst.forEach((num) => {\n    if (num > 0 && num % 2 !== 0) {\n      sum += num ** 2;\n    }\n  });\n  return sum;\n};\n\nmodule.exports = doubleTheDifference;\n",
+            "canonical_solution": "\nconst doubleTheDifference = (lst) => {\n  let p = 0\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] % 2 == 1 && lst[i] > 0) {\n      p += lst[i] * lst[i]\n    }\n  }\n  return p\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "151"
+        },
+        {
+            "pass": false,
+            "program": "\nconst filterIntegers = (values) => {\n\n  return values.filter((value) => typeof value === 'number');\n};\n\nmodule.exports = filterIntegers;\n",
+            "canonical_solution": "\nconst filterIntegers = (values) => {\n  return values.filter(x => Number.isInteger(x));\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "22"
+        },
+        {
+            "pass": false,
+            "program": "\nconst specialFactorial = (n) => {\n\n  let result = 1;\n  for (let i = n; i > 0; i--) {\n    result *= i;\n  }\n  return result;\n};\n\nmodule.exports = specialFactorial;\n",
+            "canonical_solution": "\nconst specialFactorial = (n) => {\n  let p = 1;\n  let t = 1;\n  while (n > 1) {\n    let y = p;\n    while (y > 0) {\n      y--;\n      t *= n;\n    }\n    p++;\n    n--;\n  }\n  return t\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "139"
+        },
+        {
+            "pass": false,
+            "program": "\nconst removeDuplicates = (numbers) => {\n\n  const seen = {};\n  return numbers.filter((number) => {\n    if (seen[number]) {\n      return false;\n    }\n    seen[number] = true;\n    return true;\n  });\n};\n\nmodule.exports = removeDuplicates;\n",
+            "canonical_solution": "\nconst removeDuplicates = (numbers) => {\n  var dict = new Object();\n  for (const num of numbers) {\n    if (num in dict) {\n      dict[num] += 1;\n    } else {\n      dict[num] = 1;\n    }\n  }\n  return numbers.filter(x => dict[x] <= 1);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "26"
+        },
+        {
+            "pass": true,
+            "program": "\nconst maxElement = (l) => {\n\n  return l.reduce((a, b) => Math.max(a, b));\n};\n\nmodule.exports = maxElement;\n",
+            "canonical_solution": "\nconst maxElement = (l) => {\n  return Math.max(...l);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "35"
+        },
+        {
+            "pass": true,
+            "program": "\nconst monotonic = (l) => {\n\n  let inc = true;\n  let dec = true;\n  for (let i = 1; i < l.length; i++) {\n    if (l[i] < l[i - 1]) {\n      dec = false;\n    }\n    if (l[i] > l[i - 1]) {\n      inc = false;\n    }\n  }\n  return inc || dec;\n};\n",
+            "canonical_solution": "\nconst monotonic = (l) => {\n  var sort1 = [...l].sort((a, b) => a - b);\n  var sort2 = [...l].sort((a, b) => b - a);\n  if (JSON.stringify(l) === JSON.stringify(sort1) ||\n      JSON.stringify(l) === JSON.stringify(sort2))\n    return true;\n  return false;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "57"
+        },
+        {
+            "pass": false,
+            "program": "\nconst derivative = (xs) => {\n\n  const result = [];\n  for (let i = 1; i < xs.length; i++) {\n    result.push(xs[i] * i);\n  }\n  return result;\n};\n\nexport default derivative;\n",
+            "canonical_solution": "\nconst derivative = (xs) => {\n  return xs.map((x, i) => x * i).slice(1);\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "62"
+        },
+        {
+            "pass": false,
+            "program": "\nconst strangeSortList = (lst) => {\n\n  if (lst.length === 0) return lst;\n  const sorted = lst.sort((a, b) => a - b);\n  const result = [];\n  while (sorted.length > 0) {\n    result.push(sorted[0]);\n    sorted.splice(sorted.indexOf(sorted[0]), 1);\n    result.push(sorted.sort((a, b) => b - a)[0]);\n    sorted.splice(sorted.indexOf(sorted[0]), 1);\n  }\n  return result;\n};\n\nmodule.exports = strangeSortList;\n",
+            "canonical_solution": "\nconst strangeSortList = (lst) => {\n  var res = [], sw = true;\n  while (lst.length) {\n    res.push(sw ? Math.min(...lst) : Math.max(...lst));\n    lst.splice(lst.indexOf(res.at(-1)), 1);\n    sw = !sw;\n  }\n  return res;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "70"
+        },
+        {
+            "pass": false,
+            "program": "\nconst parseNestedParens = (paren_string) => {\n\n  const paren_list = paren_string.split(' ');\n  const result = [];\n  for (let i = 0; i < paren_list.length; i++) {\n    const paren = paren_list[i];\n    let count = 0;\n    for (let j = 0; j < paren.length; j++) {\n      if (paren[j] === '(') {\n        count++;\n      } else if (paren[j] === ')') {\n        count--;\n      }\n    }\n    result.push(count);\n  }\n  return result;\n};\n\nmodule.exports = parseNestedParens;\n",
+            "canonical_solution": "\nconst parseNestedParens = (paren_string) => {\n  var parseParenGroup = function (s) {\n    let depth = 0, max_depth = 0;\n    for (const c of s) {\n      if (c == '(') {\n        depth += 1;\n        max_depth = Math.max(max_depth, depth);\n      } else {\n        depth -= 1;\n      }\n    }\n    return max_depth;\n  }\n  return paren_string.split(' ')\n          .filter(x => x != '')\n          .map(x => parseParenGroup(x));\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "No"
+            },
+            "question_id": "6"
+        },
+        {
+            "pass": true,
+            "program": "\nconst concatenate = (strings) => {\n\n  return strings.join('');\n};\n\nmodule.exports = concatenate;\n",
+            "canonical_solution": "\nconst concatenate = (strings) => {\n  return strings.join('');\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "28"
+        },
+        {
+            "pass": false,
+            "program": "\nconst generateIntegers = (a, b) => {\n\n  const result = [];\n  for (let i = a; i <= b; i++) {\n    if (i % 2 === 0) {\n      result.push(i);\n    }\n  }\n  return result;\n};\n\nmodule.exports = generateIntegers;\n",
+            "canonical_solution": "\nconst generateIntegers = (a, b) => {\n  if (a > b) {\n    let tmp = a;\n    a = b;\n    b = tmp;\n  }\n  let y = []\n  for (let i = a; i <= b; i++) {\n    if (i == 2 || i == 4 || i == 6 || i == 8) { y.push(i) }\n  }\n  return y\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "Yes"
+            },
+            "question_id": "163"
+        }
+    ]
+}

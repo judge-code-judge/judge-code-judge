@@ -1,0 +1,420 @@
+{
+    "parameters": {
+        "model": "gpt-3.5-turbo-1106",
+        "analyze_prompt": [
+            {
+                "role": "system",
+                "content": "You will be provided with an analysis result of a code snippet.\nIf the analysis believes that the code snippet is correct, output: \"Yes\". Otherwise, output: \"No\".\n"
+            },
+            {
+                "role": "user",
+                "content": "Analysis Result:\"\"\"\n{{MISTAKES}}\n\"\"\"\n"
+            },
+            {
+                "role": "assistant",
+                "content": "Final Answer (Yes or No):\n"
+            }
+        ],
+        "compare_prompt": [
+            {
+                "role": "system",
+                "content": "You will be provided with a problem statement and a code snippet that supposedly addresses the problem in {{LANGUAGE}}.\nYour task is to check if the code snippet covers the required functionalities. Do not provide a corrected version.\nEvaluation Steps:\n1. Read the problem statement carefully and identify the required functionalities of the implementation. You can refer to the example to understand the problem better.\n2. Read the code snippet and analyze its logic. Check if the code snippet covers all the required functionalities of the problem.\n3. Finally, conclude your evaluation.\n"
+            },
+            {
+                "role": "user",
+                "content": "Problem Statement: \"\"\"\n{{PROBLEM}}\n{{EXAMPLE}}\n\"\"\"\nCode Snippet: \"\"\"{{LANGUAGE}}\n{{CODE1}}\n\"\"\"\n"
+            },
+            {
+                "role": "assistant",
+                "content": "Evaluation:\n"
+            }
+        ],
+        "temperature": 0.0
+    },
+    "data": [
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool correct_bracketing(string brackets){\n\n    int len = brackets.length();\n    int count = 0;\n    for(int i=0;i<len;i++){\n        if(brackets[i]=='(')\n            count++;\n        else\n            count--;\n        if(count<0)\n            return false;\n    }\n    return count==0;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool correct_bracketing(string brackets){\n    int level=0;\n    for (int i=0;i<brackets.length();i++)\n    {\n        if (brackets[i]=='(') level+=1;\n        if (brackets[i]==')') level-=1;\n        if (level<0) return false;\n    }\n    if (level!=0) return false;\n    return true;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function correct_bracketing that takes a string of brackets as input and checks if every opening bracket has a corresponding closing bracket. The function iterates through the string and increments the count for each opening bracket and decrements the count for each closing bracket. If the count becomes negative at any point, it returns false. Finally, it checks if the count is zero and returns true if it is.\n\nThe code snippet covers the required functionality of checking if every opening bracket has a corresponding closing bracket. It correctly returns false for \"(\" and \")(()\" and true for \"()\", \"(()())\".\n\nSo, the code snippet covers all the required functionalities.\n\nConclusion: Code snippet covers the required functionalities.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "61"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> unique_digits(vector<int> x){\n\n    vector<int> ans;\n    for(int i=0;i<x.size();i++){\n        int flag=0;\n        int temp=x[i];\n        while(temp>0){\n            if(temp%10%2==0){\n                flag=1;\n                break;\n            }\n            temp/=10;\n        }\n        if(flag==0)\n            ans.push_back(x[i]);\n    }\n    sort(ans.begin(),ans.end());\n    return ans;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> unique_digits(vector<int> x){\n    vector<int> out={};\n    for (int i=0;i<x.size();i++)\n        {\n            int num=x[i];\n            bool u=true;\n            if (num==0) u=false;\n            while (num>0 and u)\n            {\n                if (num%2==0) u=false;\n                num=num/10;\n            }\n            if (u) out.push_back(x[i]);\n        }\n    sort(out.begin(),out.end());\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function unique_digits that takes a vector of integers as input and returns a sorted vector of integers that do not contain any even digit. The code iterates through each integer in the input vector, checks if it contains any even digit, and then adds it to the result vector if it doesn't contain any even digit. Finally, the result vector is sorted in increasing order.\n\nThe code snippet covers all the required functionalities of the problem statement. It correctly filters out the integers that contain even digits and returns a sorted list of integers without any even digit.\n\nSo, the code snippet is correct and covers all the required functionalities.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "104"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\n#include<map>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<string> by_length(vector<int> arr){\n\n    vector<string> result;\n    map<int, string> map_num_name = {\n        {1, \"One\"},\n        {2, \"Two\"},\n        {3, \"Three\"},\n        {4, \"Four\"},\n        {5, \"Five\"},\n        {6, \"Six\"},\n        {7, \"Seven\"},\n        {8, \"Eight\"},\n        {9, \"Nine\"}\n    };\n    for(int i = 0; i < arr.size(); i++){\n        if(arr[i] >= 1 && arr[i] <= 9){\n            result.push_back(map_num_name[arr[i]]);\n        }\n    }\n   \n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\n#include<map>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<string> by_length(vector<int> arr){\n    map<int,string> numto={{0,\"Zero\"},{1,\"One\"},{2,\"Two\"},{3,\"Three\"},{4,\"Four\"},{5,\"Five\"},{6,\"Six\"},{7,\"Seven\"},{8,\"Eight\"},{9,\"Nine\"}};\n    sort(arr.begin(),arr.end());\n    vector<string> out={};\n    for (int i=arr.size()-1;i>=0;i-=1)\n        if (arr[i]>=1 and arr[i]<=9)\n        out.push_back(numto[arr[i]]);\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The given code snippet defines a function that takes a vector of integers, sorts the integers between 1 and 9 inclusive, and replaces each digit by its corresponding name from \"One\" to \"Nine\". However, the code snippet is incomplete as it does not perform the reverse operation on the resulting array and does not return the modified array.\n\nThe code snippet also does not handle the case when the input array is empty or contains strange numbers. It should return an empty array in the case of an empty input array and ignore strange numbers.\n\nTherefore, the code snippet does not cover all the required functionalities of the problem statement.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "105"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nvector<int> incr_list(vector<int> l){\n\n    for(int i=0;i<l.size();i++){\n        l[i]++;\n    }\n    return l;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nvector<int> incr_list(vector<int> l){\n    for (int i=0;i<l.size();i++)\n        l[i]+=1;\n    return l;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function incr_list that takes a vector of integers as input and increments each element by 1. The function then returns the modified vector.\n\nThe code snippet covers the required functionality of incrementing each element of the input list by 1. Therefore, the code snippet is correct and meets the requirements of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "42"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> order_by_points(vector<int> nums){\n\n    vector<int> result;\n    vector<int> temp;\n    int sum = 0;\n    int i = 0;\n    int j = 0;\n    int k = 0;\n    int l = 0;\n    int m = 0;\n    int n = 0;\n    int o = 0;\n    int p = 0;\n    int q = 0;\n    int r = 0;\n    int s = 0;\n    int t = 0;\n    int u = 0;\n    int v = 0;\n    int w = 0;\n    int x = 0;\n    int y = 0;\n    int z = 0;\n    for(i = 0; i < nums.size(); i++){\n        sum = 0;\n        while(nums[i] > 0){\n            sum = sum + nums[i] % 10;\n            nums[i] = nums[i] / 10;\n        }\n        temp.push_back(sum);\n        nums[i] = i;\n    }\n    for(j = 0; j < nums.size(); j++){\n        for(k = j + 1; k < nums.size(); k++){\n            if(temp[j] < temp[k]){\n                l = temp[j];\n                temp[j] = temp[k];\n                temp[k] = l\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> order_by_points(vector<int> nums){\n    vector<int> sumdigit={};\n    for (int i=0;i<nums.size();i++)\n    {\n        string w=to_string(abs(nums[i]));\n        int sum=0;\n        for (int j=1;j<w.length();j++)\n            sum+=w[j]-48;\n        if (nums[i]>0) sum+=w[0]-48;\n        else sum-=w[0]-48;\n        sumdigit.push_back(sum);\n    }\n    int m;\n    for (int i=0;i<nums.size();i++)\n    for (int j=1;j<nums.size();j++)\n    if (sumdigit[j-1]>sumdigit[j])\n    {\n        m=sumdigit[j];sumdigit[j]=sumdigit[j-1];sumdigit[j-1]=m;\n        m=nums[j];nums[j]=nums[j-1];nums[j-1]=m;\n    }\n     \n    return nums;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The given code snippet attempts to solve the problem by calculating the sum of digits for each number in the input list and then sorting the numbers based on the calculated sum. However, the code snippet is incomplete and contains syntax errors. It does not handle the case where there are several items with similar sum of their digits, and it does not return the sorted list as the result.\n\nTherefore, the code snippet does not cover all the required functionalities of the problem.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "145"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> tri(int n){\n\n    vector<int> result;\n    if(n==0){\n        result.push_back(0);\n        return result;\n    }\n    if(n==1){\n        result.push_back(0);\n        result.push_back(1);\n        return result;\n    }\n    if(n==2){\n        result.push_back(0);\n        result.push_back(1);\n        result.push_back(2);\n        return result;\n    }\n    result.push_back(0);\n    result.push_back(1);\n    result.push_back(2);\n    for(int i=3;i<=n;i++){\n        if(i%2==0){\n            result.push_back(result[i-1]+result[i-2]+result[i-3]);\n        }\n        else{\n            result.push_back(result[i-1]+result[i-2]+result[i-3]+1);\n        }\n    }\n    return result\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> tri(int n){\n    vector<int> out={1,3};\n    if (n==0) return {1};\n    for (int i=2;i<=n;i++)\n    {\n        if (i%2==0) out.push_back(1+i/2);\n        else out.push_back(out[i-1]+out[i-2]+1+(i+1)/2);\n    }\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function `tri` that takes an integer `n` as input and returns a vector of integers as output. The function calculates the Tribonacci sequence up to the nth term and returns the result.\n\nThe code snippet correctly covers the required functionality of calculating the Tribonacci sequence as per the given recurrence relation. It initializes the result vector with the base cases and then iterates to calculate the subsequent terms based on whether the index is even or odd.\n\nThe code snippet seems to cover all the required functionalities and provides a valid implementation for calculating the Tribonacci sequence.\n\nFinal evaluation: The code snippet correctly implements the functionality to calculate the Tribonacci sequence.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "130"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.5714285714285714,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> sort_array(vector<int> array){\n\n    if(array.size()==0) return array;\n    if(array.size()==1) return array;\n    if(array[0]+array[array.size()-1]%2==1){\n        sort(array.begin(),array.end());\n    }\n    else{\n        sort(array.begin(),array.end(),greater<int>());\n    }\n    return array;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> sort_array(vector<int> array){\n    if (array.size()==0) return {};\n    if ((array[0]+array[array.size()-1]) %2==1)\n    {\n        sort(array.begin(),array.end());\n        return array;\n    }\n    else\n    {\n        sort(array.begin(),array.end());\n        vector<int> out={};\n        for (int i=array.size()-1;i>=0;i-=1)\n            out.push_back(array[i]);\n        return out;\n    }\n\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The code snippet provided takes an input array of non-negative integers and returns a sorted copy of the array based on the sum of the first and last index value. If the sum is odd, the array is sorted in ascending order, and if the sum is even, the array is sorted in descending order.\n\nHowever, there are a few issues in the code:\n1. There is a missing parenthesis in the condition `if(array[0]+array[array.size()-1]%2==1)`. It should be `if((array[0]+array[array.size()-1])%2==1)` to calculate the sum first and then check if it's odd.\n2. The code uses `#include<stdio.h>`, `#include<math.h>`, and `#include<stdlib.h>`, which are unnecessary for the given functionality and can be removed.\n3. The code uses `using namespace std;`, which is generally considered bad practice and should be avoided.\n\nOverall, the code does not cover all the required functionalities and has some issues that need to be addressed.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "88"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<math.h>\n#include<stdlib.h>\nstring string_xor(string a,string b){\n\n    int len=a.length();\n    string result=\"\";\n    for(int i=0;i<len;i++){\n        if(a[i]=='1' && b[i]=='1'){\n            result+=\"0\";\n        }\n        else if(a[i]=='0' && b[i]=='0'){\n            result+=\"0\";\n        }\n        else{\n            result+=\"1\";\n        }\n    }\n    return result;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<math.h>\n#include<stdlib.h>\nstring string_xor(string a,string b){\n    string output=\"\";\n    for (int i=0;(i<a.length() and i<b.length());i++)\n    {\n        if (i<a.length() and i<b.length())\n        {\n            if (a[i]== b[i]) \n            {\n                output+='0';\n            }  \n            else output+='1';\n        }\n        else\n        {\n            if (i>=a.length()) \n            {\n            output+=b[i];\n            }\n            else output+=a[i];\n        }\n    }\n    return output;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function string_xor that takes two input strings consisting of 1s and 0s, performs binary XOR on these inputs, and returns the result as a string. The function iterates through the input strings and applies the XOR logic to each pair of corresponding characters.\n\nThe code snippet covers the required functionality of performing binary XOR on the input strings and returning the result as a string. It correctly handles the cases where both characters are '1', both are '0', or one is '1' and the other is '0'.\n\nTherefore, the code snippet covers all the required functionalities of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "11"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<algorithm>\n#include<boost/any.hpp>\nusing namespace std;\n#include<stdlib.h>\nboost::any compare_one(boost::any a,boost::any b){\n\n    if(a.type()==typeid(int) && b.type()==typeid(int)){\n        int x=boost::any_cast<int>(a);\n        int y=boost::any_cast<int>(b);\n        if(x>y)\n            return a;\n        else if(x<y)\n            return b;\n        else\n            return \"None\";\n    }\n    else if(a.type()==typeid(float) && b.type()==typeid(float)){\n        float x=boost::any_cast<float>(a);\n        float y=boost::any_cast<float>(b);\n        if(x>y)\n            return a;\n        else if(x<y)\n            return b;\n        else\n            return \"None\";\n    }\n    else if(a.type()==typeid(string) && b.type()==typeid(string)){\n        string x=boost::any_cast<string>(a);\n        string y=boost::any_cast<string>(b);\n        if(x>y)\n            return a;\n        else if(x<y)\n            return b;\n        else\n            return \"None\";\n    }\n    else if(a.type()==typeid(int) && b.type()==typeid(float)){\n        int x=boost\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<algorithm>\n#include<boost/any.hpp>\nusing namespace std;\n#include<stdlib.h>\nboost::any compare_one(boost::any a,boost::any b){\n    double  numa,numb;\n    boost::any out;\n   \n    if (a.type()==typeid(string))\n    {\n        string s;\n        s=boost::any_cast<string>(a);\n        if (find(s.begin(),s.end(),',')!=s.end())\n            for (int i=0;i<s.length();i++)\n                if (s[i]==',') s=s.substr(0,i)+'.'+s.substr(i+1);\n        numa=atof(s.c_str());\n        \n    }\n    else \n    {\n        if (a.type()==typeid(int)) numa=boost::any_cast<int>(a);\n        if (a.type()==typeid(double)) numa=boost::any_cast<double>(a);\n    }\n    if (b.type()==typeid(string))\n    {\n        string s;\n        s=boost::any_cast<string>(b);\n        if (find(s.begin(),s.end(),',')!=s.end())\n            for (int i=0;i<s.length();i++)\n                if (s[i]==',') s=s.substr(0,i)+'.'+s.substr(i+1);\n        numb=atof(s.c_str());\n    }\n    else \n    {\n        if (b.type()==typeid(int)) numb=boost::any_cast<int>(b);\n        if (b.type()==typeid(double)) numb=boost::any_cast<double>(b);\n    }\n\n    if (numa==numb) return string(\"None\");\n    if (numa<numb) return b;\n    if (numa>numb) return a;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The code snippet provided attempts to create a function `compare_one` that takes two parameters of type `boost::any` and compares them based on their type (int, float, or string). It then returns the larger variable in its given variable type or \"None\" if the values are equal.\n\nHowever, the code snippet is incomplete and contains syntax errors. It does not cover all the required functionalities mentioned in the problem statement. Additionally, the code snippet does not handle the case where the input is a string representing a real number with a comma (\",\") instead of a period (\".\").\n\nTherefore, the code snippet does not fully address the required functionalities and needs to be revised.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "137"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint digitSum(string s){\n\n    int sum=0;\n    for(int i=0;i<s.length();i++){\n        if(s[i]>='A' && s[i]<='Z'){\n            sum+=s[i];\n        }\n    }\n    return sum;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint digitSum(string s){\n    int sum=0;\n    for (int i=0;i<s.length();i++)\n        if (s[i]>=65 and s[i]<=90)\n            sum+=s[i];\n    return sum;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function digitSum that takes a string as input and returns the sum of the ASCII codes of the uppercase characters in the string. The function iterates through the input string and adds the ASCII value of each uppercase character to the sum.\n\nThe code snippet covers the required functionality of calculating the sum of the ASCII codes of the uppercase characters in the input string. It correctly handles the empty string case and returns 0. It also correctly calculates the sum of the ASCII codes for the uppercase characters in the non-empty input strings.\n\nTherefore, the code snippet covers all the required functionalities of the problem statement.\n\nConclusion: The code snippet is correct and covers the required functionalities.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "66"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nvector<float> get_positive(vector<float> l){\n\n    vector<float> positive;\n    for(int i=0;i<l.size();i++){\n        if(l[i]>0){\n            positive.push_back(l[i]);\n        }\n    }\n    return positive;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nvector<float> get_positive(vector<float> l){\n    vector<float> out={};\n    for (int i=0;i<l.size();i++)\n        if (l[i]>0) out.push_back(l[i]);\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function get_positive that takes a vector of floats as input and returns a new vector containing only the positive numbers from the input vector. The code iterates through the input vector and adds the positive numbers to the new vector.\n\nThe code snippet covers the required functionality of returning only positive numbers in the list. It correctly filters out the positive numbers and returns a new vector containing only those positive numbers.\n\nSo, the code snippet covers all the required functionalities of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "30"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nbool valid_date(string date){\n\n    int month,day,year;\n    if(date.length()!=10)\n        return false;\n    if(date[2]!='-' || date[5]!='-')\n        return false;\n    month=date[0]-'0';\n    day=date[1]-'0';\n    year=date[6]-'0';\n    year=year*10+date[7]-'0';\n    year=year*10+date[8]-'0';\n    year=year*10+date[9]-'0';\n    if(month<1 || month>12)\n        return false;\n    if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12){\n        if(day<1 || day>31\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nbool valid_date(string date){\n    int mm,dd,yy,i;\n    if (date.length()!=10) return false;\n    for (int i=0;i<10;i++)\n        if (i==2 or i==5)\n        {\n            if (date[i]!='-') return false;\n        }\n        else\n            if (date[i]<48 or date[i]>57) return false;\n\n    mm=atoi(date.substr(0,2).c_str());\n    dd=atoi(date.substr(3,2).c_str());\n    yy=atoi(date.substr(6,4).c_str());\n    if (mm<1 or mm>12) return false;\n    if (dd<1 or dd>31) return false;\n    if (dd==31 and (mm==4 or mm==6 or mm==9 or mm==11 or mm==2)) return false;\n    if (dd==30 and mm==2) return false;\n    return true;\n\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The given code snippet attempts to validate a date string by checking its length, format, and the values of month, day, and year. However, the code snippet is incomplete and contains syntax errors. It does not cover all the required functionalities mentioned in the problem statement.\n\nThe code snippet does check the length of the date string and the format of the date, but it does not validate the range of days based on the month. Additionally, the code snippet does not return any value for the case where the month has 31 days.\n\nTherefore, the code snippet does not cover all the required functionalities to validate a date string.\n\nConclusion: Incomplete and incorrect implementation.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "124"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.6666666666666666,
+            "program": "#include<stdio.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<math.h>\n#include<stdlib.h>\nbool cycpattern_check(string a,string b){\n\n    int len_a=a.length();\n    int len_b=b.length();\n    if(len_a<len_b)\n        return false;\n    for(int i=0;i<len_a;i++){\n        string temp=a.substr(i,len_b);\n        if(temp==b)\n            return true;\n    }\n    return false;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<math.h>\n#include<stdlib.h>\nbool cycpattern_check(string a,string b){\n    for (int i=0;i<b.size();i++)\n    {\n        string rotate=b.substr(i)+b.substr(0,i);\n        if (a.find(rotate)!=string::npos) return true;\n    }\n    return false;\n\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet takes two strings as input and checks if the second string or any of its rotations is a substring of the first string. It iterates through all possible substrings of the first string and checks if any of them matches the second string.\n\nThe code snippet covers the required functionality of checking if the second word or any of its rotations is a substring in the first word. It correctly returns true if the condition is met and false otherwise.\n\nTherefore, the code snippet covers all the required functionalities of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "154"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.75,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint how_many_times(string str,string substring){\n\n\tint count=0;\n\tint i=0;\n\tint j=0;\n\twhile(i<str.length()){\n\t\tif(str[i]==substring[j]){\n\t\t\tj++;\n\t\t\tif(j==substring.length()){\n\t\t\t\tcount++;\n\t\t\t\tj=0;\n\t\t\t}\n\t\t}\n\t\telse{\n\t\t\ti=i-j;\n\t\t\tj=0;\n\t\t}\n\t\ti++;\n\t}\n\treturn count;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint how_many_times(string str,string substring){\n    int out=0;\n    if (str.length()==0) return 0;\n    for (int i=0;i<=str.length()-substring.length();i++)\n    if (str.substr(i,substring.length())==substring)\n        out+=1;\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function \"how_many_times\" that takes in two string parameters: \"str\" and \"substring\". It then iterates through the original string \"str\" and checks for occurrences of the given substring. It uses a simple algorithm to count the number of times the substring appears in the original string, including overlapping cases.\n\nThe code snippet covers the required functionality of finding how many times a given substring can be found in the original string, including counting overlapping occurrences. It uses a simple iterative approach to achieve this.\n\nTherefore, the code snippet covers all the required functionalities of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "18"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.75,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nstring intersection( vector<int> interval1,vector<int> interval2){\n\n    if(interval1[1]<interval2[0] || interval2[1]<interval1[0]){\n        return \"NO\";\n    }\n    int start=max(interval1[0],interval2[0]);\n    int end=min(interval1[1],interval2[1]);\n    int length=end-start+1;\n    if(length==1){\n        return \"NO\";\n    }\n    for(int i=2;i<=length;i++){\n        if(length%i==0){\n            return \"NO\";\n        }\n    }\n    return \"YES\";\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nstring intersection( vector<int> interval1,vector<int> interval2){\n    int inter1,inter2,l,i;\n    inter1=max(interval1[0],interval2[0]);\n    inter2=min(interval1[1],interval2[1]);\n    l=inter2-inter1;\n    if (l<2) return \"NO\";\n    for (i=2;i*i<=l;i++)\n        if (l%i==0) return \"NO\";\n    return \"YES\";\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet takes two intervals as input and checks if they intersect. If the intervals do not intersect, it returns \"NO\". If they do intersect, it calculates the length of the intersection and checks if it is a prime number. If the length is 1, it returns \"NO\" as 1 is not a prime number. Otherwise, it iterates through the numbers from 2 to the length-1 and checks if the length is divisible by any of these numbers. If it is divisible, it returns \"NO\", otherwise, it returns \"YES\".\n\nThe code snippet covers the required functionalities of determining whether the length of the intersection of two intervals is a prime number. It correctly handles the cases where the intervals intersect and where they do not. Therefore, the code snippet is correct.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "127"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint solutions(vector<int> lst){\n\n    int sum=0;\n    for(int i=0;i<lst.size();i++){\n        if(lst[i]%2!=0 && i%2==0){\n            sum+=lst[i];\n        }\n    }\n    return sum;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint solutions(vector<int> lst){\n    int sum=0;\n    for (int i=0;i*2<lst.size();i++)\n        if (lst[i*2]%2==1) sum+=lst[i*2];\n    return sum;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function that takes a vector of integers as input and returns the sum of all the odd elements that are in even positions. The code iterates through the input vector and checks if the element is odd and if its index is even, then adds it to the sum.\n\nThe code snippet covers all the required functionalities of the problem statement. It correctly calculates the sum of all the odd elements that are in even positions in the input list of integers.\n\nSo, the code snippet is correct and covers all the required functionalities.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "121"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<vector>\n#include<math.h>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool has_close_elements(vector<float> numbers, float threshold){\n\n    for(int i=0; i<numbers.size()-1; i++){\n        for(int j=i+1; j<numbers.size(); j++){\n            if(fabs(numbers[i]-numbers[j])<=threshold)\n                return true;\n        }\n    }\n    return false;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<vector>\n#include<math.h>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool has_close_elements(vector<float> numbers, float threshold){\n    int i,j;\n    \n    for (i=0;i<numbers.size();i++)\n    for (j=i+1;j<numbers.size();j++)\n    if (abs(numbers[i]-numbers[j])<threshold)\n    return true;\n\n    return false;\n}\n\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function \"has_close_elements\" that takes a vector of floats and a threshold as input and checks if there are any two numbers in the vector that are closer to each other than the given threshold. The function uses a nested loop to compare each pair of numbers and returns true if the absolute difference between any two numbers is less than or equal to the threshold, otherwise it returns false.\n\nThe code snippet covers the required functionality of checking if any two numbers in the given list are closer to each other than the given threshold. The implementation seems correct.\n\nSo, the code snippet is addressing the problem statement correctly.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "0"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.6,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nvector<int> parse_music(string music_string){ \n\n    vector<int> result;\n    for(int i=0; i<music_string.size(); i++){\n        if(music_string[i]=='o'){\n            result.push_back(4);\n        }\n        else if(music_string[i]=='o' && music_string[i+1]=='|'){\n            result.push_back(2);\n            i++;\n        }\n        else if(music_string[i]=='.' && music_string[i+1]=='|'){\n            result.push_back(1);\n            i++;\n        }\n    }\n    return result;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nvector<int> parse_music(string music_string){ \n    string current=\"\";\n    vector<int> out={};\n    if (music_string.length()>0)\n        music_string=music_string+' ';\n    for (int i=0;i<music_string.length();i++)\n    {\n        if (music_string[i]==' ')\n        {\n            if (current==\"o\") out.push_back(4);\n            if (current==\"o|\") out.push_back(2);\n            if (current==\".|\") out.push_back(1);\n            current=\"\";\n        }\n        else current+=music_string[i];\n    }\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The code snippet does not cover all the required functionalities of the problem statement. It only handles the case for 'o' and partially handles the case for 'o|' but does not cover the case for '.|'. Additionally, the logic inside the if-else conditions is incorrect. Therefore, the code snippet does not provide the correct implementation for the given problem statement.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "17"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.8333333333333334,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool below_threshold(vector<int>l, int t){\n\n    for(int i=0; i<l.size(); i++){\n        if(l[i]>t){\n            return false;\n        }\n    }\n    return true;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool below_threshold(vector<int>l, int t){\n    for (int i=0;i<l.size();i++)\n        if (l[i]>=t) return false;\n    return true;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function below_threshold that takes a vector of integers l and an integer t as input. It then iterates through the vector and checks if any element is greater than the threshold t. If it finds any element greater than t, it returns false, otherwise it returns true.\n\nThe code snippet covers the required functionality of checking if all numbers in the list l are below the threshold t. It iterates through the list and returns false if any number is greater than the threshold, otherwise it returns true.\n\nSo, the code snippet covers all the required functionalities of the problem statement.\n\nConclusion: Code snippet covers the required functionalities.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "52"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> get_odd_collatz(int n){\n\n    vector<int> res;\n    while(n!=1){\n        if(n%2==0)\n            n/=2;\n        else\n            n=3*n+1;\n        res.push_back(n);\n    }\n    sort(res.begin(),res.end());\n    return res;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nvector<int> get_odd_collatz(int n){\n    vector<int> out={1};\n    while (n!=1)\n    {\n        if (n%2==1) {out.push_back(n); n=n*3+1;}\n        else n=n/2;\n    }\n    sort(out.begin(),out.end());\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function get_odd_collatz that takes a positive integer n as input and returns a sorted list of odd numbers in the Collatz sequence starting from n. The code correctly implements the logic to generate the Collatz sequence and store the odd numbers in a vector. It also sorts the vector in increasing order before returning it.\n\nThe code snippet covers the required functionality of generating the odd numbers in the Collatz sequence and returning them in sorted order. Therefore, the code snippet is correct and meets the requirements of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "123"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nstring encode_cyclic(string s){ \n    int l=s.length();\n    int num=(l+2)/3;\n    string x,output;\n    int i;\n    for (i=0;i*3<l;i++)\n    {\n        x=s.substr(i*3,3);\n        if (x.length()==3) x=x.substr(1)+x[0];\n        output=output+x;\n    }\n    return output;\n}\n\n\nstring decode_cyclic(string s){ \n   int l=s.length();\n    int num=(l+2)/3;\n    string x,output;\n    int i;\n    for (i=0;i*3<l;i++)\n    {\n\n    int l=s.length();\n    int num=(l+2)/3;\n    string x,output;\n    int i;\n    for (i=0;i*3<l;i++)\n    {\n        //cycle elements in each group. Unless group has fewer elements than 3.\n        x=s.substr(i*3,3);\n        if (x.length()==3) x=x[2]+x.substr(0,2);\n        output=output+x;\n    }\n    return output;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nstring encode_cyclic(string s){ \n    int l=s.length();\n    int num=(l+2)/3;\n    string x,output;\n    int i;\n    for (i=0;i*3<l;i++)\n    {\n        x=s.substr(i*3,3);\n        if (x.length()==3) x=x.substr(1)+x[0];\n        output=output+x;\n    }\n    return output;\n}\n\n\nstring decode_cyclic(string s){ \n   int l=s.length();\n    int num=(l+2)/3;\n    string x,output;\n    int i;\n    for (i=0;i*3<l;i++)\n    {\n    int l=s.length();\n    int num=(l+2)/3;\n    string x,output;\n    int i;\n    for (i=0;i*3<l;i++)\n    {\n        x=s.substr(i*3,3);\n        if (x.length()==3) x=x[2]+x.substr(0,2);\n        output=output+x;\n    }\n    return output;\n\n\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The given code snippet contains two functions: encode_cyclic and decode_cyclic. The encode_cyclic function takes a string as input and encodes it by cyclically shifting the characters in groups of 3. The decode_cyclic function is supposed to decode the encoded string by reversing the cyclic shift.\n\nHowever, upon reviewing the code, it is found that the decode_cyclic function is incomplete and contains errors. The code snippet does not cover all the required functionalities for decoding the encoded string. Therefore, the code snippet does not fully address the problem statement.\n\nThe decode_cyclic function needs to be revised to correctly decode the encoded string by reversing the cyclic shift.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "38"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool will_it_fly(vector<int> q,int w){\n\n    int sum=0;\n    for(int i=0;i<q.size();i++){\n        sum+=q[i];\n    }\n    if(sum>w){\n        return false;\n    }\n    for(int i=0;i<q.size();i++){\n        if(q[i]!=q[q.size()-1-i]){\n            return false;\n        }\n    }\n    return true;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool will_it_fly(vector<int> q,int w){\n    int sum=0;\n    for (int i=0;i<q.size();i++)\n    {\n        if (q[i]!=q[q.size()-1-i]) return false;\n        sum+=q[i];\n    }\n    if (sum>w) return false;\n    return true;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function \"will_it_fly\" that takes a vector of integers and an integer as input. It calculates the sum of the elements in the vector and checks if the sum is less than or equal to the given maximum weight. It then checks if the vector is palindromic (balanced) by comparing elements from the start and end of the vector.\n\nThe code snippet covers the required functionalities of the problem statement:\n1. It checks if the sum of the elements is less than or equal to the maximum possible weight.\n2. It checks if the vector is balanced (palindromic).\n\nTherefore, the code snippet covers all the required functionalities and appears to be correct.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "72"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.7142857142857143,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nbool is_nested(string str){\n\n    int count=0;\n    for(int i=0;i<str.length();i++){\n        if(str[i]=='['){\n            count++;\n        }\n        else{\n            count--;\n        }\n        if(count<0){\n            return false;\n        }\n    }\n    if(count==0){\n        return true;\n    }\n    else{\n        return false;\n    }\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<stdlib.h>\nbool is_nested(string str){\n    int count=0,maxcount=0;\n    for (int i=0;i<str.length();i++)\n    {\n        if (str[i]=='[') count+=1;\n        if (str[i]==']') count-=1;\n        if (count<0) count=0;\n        if (count>maxcount) maxcount=count;\n        if (count<=maxcount-2) return  true;\n    }\n    return false;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The given code snippet defines a function is_nested that takes a string as input and checks if the brackets in the string are properly nested. It iterates through the string and maintains a count of opening and closing brackets. If the count of closing brackets exceeds the count of opening brackets at any point, it returns false. After iterating through the entire string, if the count of opening and closing brackets is equal, it returns true, indicating that the brackets are properly nested.\n\nHowever, the code does not check for the presence of a valid subsequence of brackets where at least one bracket in the subsequence is nested, as required by the problem statement. Therefore, the code does not cover all the required functionalities.\n\nConclusion: The given code snippet does not fully address the required functionalities of the problem statement.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "132"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.5714285714285714,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<map>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool check_dict_case(map<string,string> dict){\n\n    if(dict.size()==0)\n        return false;\n    bool flag=true;\n    for(auto i=dict.begin();i!=dict.end();i++){\n        if(i->first[0]>='A' && i->first[0]<='Z'){\n            if(i->first[0]!='A')\n                flag=false;\n        }\n        else if(i->first[0]>='a' && i->first[0]<='z'){\n            if(i->first[0]!='a')\n                flag=false;\n        }\n        else\n            flag=false;\n    }\n    return flag;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<map>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool check_dict_case(map<string,string> dict){\n    map<string,string>::iterator it;\n    int islower=0,isupper=0;\n    if (dict.size()==0) return false;\n    for (it=dict.begin();it!=dict.end();it++)\n    {\n        string key=it->first;\n    \n        for (int i=0;i<key.length();i++)\n        {\n            if (key[i]<65 or (key[i]>90 and key[i]<97) or key[i]>122) return false;\n            if (key[i]>=65 and key[i]<=90) isupper=1;\n            if (key[i]>=97 and key[i]<=122) islower=1;\n            if (isupper+islower==2) return false;\n        }\n\n    }\n    return true;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The code snippet provided checks if all keys in the given dictionary are either in upper case or lower case. It returns false if the dictionary is empty. However, the code has a logical error in the key comparison. It only checks the first character of the key to determine if it's in upper case or lower case, which is not sufficient to determine the case of the entire string. Additionally, the code has unnecessary header files included and some unused headers as well.\n\nOverall, the code does not cover all the required functionalities and has a logical error.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "95"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nfloat truncate_number(float number){\n\n    return number - floor(number);\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nfloat truncate_number(float number){\n    return number-int(number);\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet defines a function truncate_number that takes a positive floating point number as input and returns the decimal part of the number by subtracting the floor of the number from the number itself. The code snippet covers the required functionality of decomposing the input number into its integer part and decimal part, and returning the decimal part.\n\nThe code snippet seems to cover all the required functionalities of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "2"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<map>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nstring sort_numbers(string numbers){\n\n    map<string, int> nums;\n    nums[\"zero\"] = 0;\n    nums[\"one\"] = 1;\n    nums[\"two\"] = 2;\n    nums[\"three\"] = 3;\n    nums[\"four\"] = 4;\n    nums[\"five\"] = 5;\n    nums[\"six\"] = 6;\n    nums[\"seven\"] = 7;\n    nums[\"eight\"] = 8;\n    nums[\"nine\"] = 9;\n    string sorted_numbers = \"\";\n    string num;\n    string temp;\n    int i = 0;\n    while(numbers[i] != '\\0'){\n        temp = \"\";\n        while(numbers[i] != ' ' && numbers[i] != '\\0'){\n            temp += numbers[i];\n            i++;\n        }\n        num = temp;\n        if(nums[num] < nums[sorted_numbers.back()]){\n            sorted_numbers = num + \" \" + sorted_numbers;\n        }\n        else{\n            sorted_numbers += num + \" \";\n        }\n        i++;\n    }\n    return sorted_numbers;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\n#include<map>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nstring sort_numbers(string numbers){\n    map<string,int> tonum={{\"zero\",0},{\"one\",1},{\"two\",2},{\"three\",3},{\"four\",4},{\"five\",5},{\"six\",6},{\"seven\",7},{\"eight\",8},{\"nine\",9}};\n    map<int,string> numto={{0,\"zero\"},{1,\"one\"},{2,\"two\"},{3,\"three\"},{4,\"four\"},{5,\"five\"},{6,\"six\"},{7,\"seven\"},{8,\"eight\"},{9,\"nine\"}};\n    int count[10];\n    for (int i=0;i<10;i++)\n        count[i]=0;\n    string out=\"\",current=\"\";\n    if (numbers.length()>0) numbers=numbers+' ';\n    for (int i=0;i<numbers.length();i++)\n        if (numbers[i]==' ')\n        {\n            count[tonum[current]]+=1;\n            current=\"\";\n        }\n        else current+=numbers[i];\n    for (int i=0;i<10;i++)\n        for (int j=0;j<count[i];j++)\n            out=out+numto[i]+' ';\n    if (out.length()>0) out.pop_back();\n    return out;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The code snippet takes a space-delimited string of numerals from 'zero' to 'nine' and sorts them based on their numerical values. It uses a map to store the numerical values of the numerals and then iterates through the input string to build the sorted string.\n\nHowever, the code has several issues:\n1. The code does not handle the case where the input string contains duplicate numerals. It should handle duplicate numerals and sort them accordingly.\n2. The code does not handle the case where the input string contains invalid numerals (other than 'zero' to 'nine'). It should handle invalid input and provide an appropriate error message or behavior.\n3. The code has a logical error in the sorting process. It compares the current numeral with the last numeral in the sorted string, which may not be correct for all cases.\n\nTherefore, the code snippet does not cover all the required functionalities of the problem statement. It needs to be revised to handle duplicate numerals, invalid input, and correct sorting logic.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "19"
+        },
+        {
+            "pass": true,
+            "pass_ratio": 1.0,
+            "program": "#include<stdio.h>\n#include<math.h>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool is_simple_power(int x,int n){\n\n    if(pow(n,round(log(x)/log(n)))==x){\n        return true;\n    }\n    else{\n        return false;\n    }\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool is_simple_power(int x,int n){\n    int p=1,count=0;\n    while (p<=x and count<100)\n    {\n        if (p==x) return true;\n        p=p*n;count+=1;\n    }\n    return false;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function is_simple_power that takes two integers x and n as input and checks if x is a simple power of n. The function uses the formula n**int=x to check if x is a simple power of n. The implementation uses the pow function from the cmath library to calculate n raised to the power of the result of rounding log(x) / log(n). If the result matches x, the function returns true; otherwise, it returns false.\n\nUpon analysis, the code snippet covers the required functionality of determining if a number x is a simple power of n. It correctly uses the mathematical formula to check for this condition.\n\nTherefore, the code snippet is correct and covers the required functionalities.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "76"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.6,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool move_one_ball(vector<int> arr){\n\n    int n=arr.size();\n    if(n==0)\n        return true;\n    int i=0;\n    while(i<n){\n        if(arr[i]<arr[i+1])\n            i++;\n        else\n            return false;\n    }\n    return true;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nbool move_one_ball(vector<int> arr){\n    int num=0;\n    if (arr.size()==0) return true;\n    for (int i=1;i<arr.size();i++)\n        if (arr[i]<arr[i-1]) num+=1;\n    if (arr[arr.size()-1]>arr[0]) num+=1;\n    if (num<2) return true;\n    return false;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 0.0,
+                "comparison": "The code snippet provided checks if the given array is already sorted in non-decreasing order. However, it does not perform the required operation of right shifting the elements to check if the array can be sorted by performing right shift operations. Therefore, the code snippet does not cover all the required functionalities of the problem statement.",
+                "parsed_comparison": "No"
+            },
+            "question_id": "109"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint fruit_distribution(string s,int n){\n\n    int apples=0,oranges=0,mango=0;\n    int i=0;\n    while(s[i]!=' '){\n        apples=apples*10+s[i]-'0';\n        i++;\n    }\n    i++;\n    while(s[i]!=' '){\n        oranges=oranges*10+s[i]-'0';\n        i++;\n    }\n    mango=n-apples-oranges;\n    return mango;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<math.h>\n#include<string>\nusing namespace std;\n#include<algorithm>\n#include<stdlib.h>\nint fruit_distribution(string s,int n){\n    string num1=\"\",num2=\"\";\n    int is12;\n    is12=0;\n    for (int i=0;i<s.size();i++)\n        \n        if (s[i]>=48 and s[i]<=57)\n        {\n            if (is12==0) num1=num1+s[i];\n            if (is12==1) num2=num2+s[i];\n        }\n        else\n          if (is12==0 and num1.length()>0) is12=1;\n    return n-atoi(num1.c_str())-atoi(num2.c_str());\n\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet takes a string representing the number of apples and oranges in the basket and an integer representing the total number of fruits in the basket. It then extracts the number of apples and oranges from the string and calculates the number of mangoes by subtracting the number of apples and oranges from the total number of fruits.\n\nThe code snippet covers the required functionality of extracting the number of apples and oranges and calculating the number of mangoes correctly. It also returns the correct result based on the given input.\n\nSo, the code snippet covers all the required functionalities of the problem statement.\n\nFinal evaluation: The code snippet is correct and covers all the required functionalities.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "67"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.5,
+            "program": "#include<stdio.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<math.h>\n#include<stdlib.h>\nvector<int> eat(int number,int need,int remaining){\n\n    vector<int> result;\n    if(number+need>remaining){\n        result.push_back(number+remaining);\n        result.push_back(0);\n    }else{\n        result.push_back(number+need);\n        result.push_back(remaining-need);\n    }\n    return result;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<vector>\nusing namespace std;\n#include<algorithm>\n#include<math.h>\n#include<stdlib.h>\nvector<int> eat(int number,int need,int remaining){\n    if (need>remaining) return {number+remaining, 0};\n    return {number+need,remaining-need};\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function eat that takes in three integers (number, need, remaining) and returns a vector of integers. The function calculates the total number of eaten carrots after the meals and the number of carrots left after the meals based on the given input.\n\nThe code snippet covers the required functionalities of the problem statement:\n1. It correctly calculates the total number of eaten carrots after the meals and the number of carrots left after the meals.\n2. It handles the case where there are not enough remaining carrots, and the rabbit eats all remaining carrots.\n\nTherefore, the code snippet covers all the required functionalities of the problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "159"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.0,
+            "program": "#include<stdio.h>\n#include<vector>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<math.h>\n#include<stdlib.h>\nstring find_max(vector<string> words){\n\n    string max_word = \"\";\n    int max_count = 0;\n    for(int i=0;i<words.size();i++){\n        int count = 0;\n        for(int j=0;j<words[i].size();j++){\n            bool found = false;\n            for(int k=0;k<words[i].size();k++){\n                if(words[i][j] == words[i][k]){\n                    found = true;\n                    break;\n                }\n            }\n            if(!found){\n                count++;\n            }\n        }\n        if(count > max_count){\n            max_count = count;\n            max_word = words[i];\n        }\n        else if(count == max_count && words[i] < max_word){\n            max_word = words[i];\n        }\n    }\n    return max_word;\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<vector>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<math.h>\n#include<stdlib.h>\nstring find_max(vector<string> words){\n    string max=\"\";\n    int maxu=0;\n    for (int i=0;i<words.size();i++)\n    {\n        string unique=\"\";\n        for (int j=0;j<words[i].length();j++)\n            if (find(unique.begin(),unique.end(),words[i][j])==unique.end())\n                unique=unique+words[i][j];\n        if (unique.length()>maxu or (unique.length()==maxu and words[i]<max))\n        {\n            max=words[i];\n            maxu=unique.length();\n        }\n    }\n    return max;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet provided defines a function find_max that takes a vector of strings as input and returns the word with the maximum number of unique characters. The function iterates through each word in the input vector and counts the number of unique characters in each word. It then compares this count with the maximum count encountered so far and updates the maximum word accordingly. If multiple words have the same maximum count of unique characters, it selects the word that comes first in lexicographical order.\n\nUpon analysis, the code snippet seems to cover the required functionalities as specified in the problem statement. It correctly identifies the word with the maximum number of unique characters and handles the case of multiple words with the same maximum count.\n\nTherefore, the code snippet appears to be a valid implementation for the given problem statement.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "158"
+        },
+        {
+            "pass": false,
+            "pass_ratio": 0.3076923076923077,
+            "program": "#include<stdio.h>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<math.h>\n#include<stdlib.h>\nbool simplify(string x,string n){\n\n    int x_num,x_den,n_num,n_den;\n    int x_ans,n_ans;\n    int i;\n    x_num=0;\n    x_den=0;\n    n_num=0;\n    n_den=0;\n    for(i=0;i<x.length();i++){\n        if(x[i]=='/'){\n            x_den=atoi(x.substr(i+1).c_str());\n            x_num=atoi(x.substr(0,i).c_str());\n        }\n    }\n    for(i=0;i<n.length();i++){\n        if(n[i]=='/'){\n            n_den=atoi(n.substr(i+1).c_str());\n            n_num=atoi(n.substr(0,i).c_str());\n        }\n    }\n    x_ans=x_num*n_den;\n    n_ans=x_den*n_num;\n    if(x_ans%n_ans==0){\n        return true;\n    }\n    else{\n        return false;\n    }\n}",
+            "canonical_solution": "#include<stdio.h>\n#include<string>\n#include<algorithm>\nusing namespace std;\n#include<math.h>\n#include<stdlib.h>\nbool simplify(string x,string n){\n    int a,b,c,d,i;\n    for (i=0;i<x.size();i++)\n        if (x[i]=='/') \n        {\n            a=atoi(x.substr(0,i).c_str());\n            b=atoi(x.substr(i+1).c_str());\n        }\n    for (i=0;i<n.size();i++)\n        if (n[i]=='/') \n        {\n            c=atoi(n.substr(0,i).c_str());\n            d=atoi(n.substr(i+1).c_str());\n        }\n    if ((a*c)%(b*d)==0) return true;\n    return false;\n}\n",
+            "code_gpt_score": {
+                "code_gpt_score": 1.0,
+                "comparison": "The code snippet takes two string representations of fractions, extracts the numerators and denominators, performs the multiplication, and then checks if the result is a whole number. The code seems to cover the required functionality of simplifying the expression x * n and returning True if the result is a whole number and False otherwise.\n\nHowever, the code could be improved by using C++ string manipulation functions instead of C-style string manipulation functions for better readability and maintainability. Additionally, the code could benefit from error handling to handle cases where the input strings do not represent valid fractions.\n\nOverall, the code snippet covers the required functionality but could be improved for better coding practices.",
+                "parsed_comparison": "Yes"
+            },
+            "question_id": "144"
+        }
+    ]
+}

@@ -1,0 +1,486 @@
+import os
+import json
+from types import FunctionType
+from typing import Dict, List, Any
+from evalplus.data import get_human_eval_plus, get_mbpp_plus
+import multiprocessing as mp
+import ast
+import operator
+import glob
+import random
+
+
+TIMEOUT = 5 # 초 단위
+
+
+import textwrap
+
+
+# 허용할 연산자 매핑
+_ALLOWED_OPERATORS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.Pow: operator.pow,
+    ast.USub: operator.neg,
+}
+
+mbpp_tasks = get_mbpp_plus()
+
+
+def _safe_eval(node):
+    if isinstance(node, ast.Constant):
+        return node.value
+
+    elif isinstance(node, ast.List):
+        return [_safe_eval(elt) for elt in node.elts]
+
+    elif isinstance(node, ast.Tuple):
+        return tuple(_safe_eval(elt) for elt in node.elts)
+
+    elif isinstance(node, ast.UnaryOp):
+        op_type = type(node.op)
+        if op_type in _ALLOWED_OPERATORS:
+            return _ALLOWED_OPERATORS[op_type](_safe_eval(node.operand))
+        raise ValueError
+
+    elif isinstance(node, ast.BinOp):
+        op_type = type(node.op)
+        if op_type in _ALLOWED_OPERATORS:
+            return _ALLOWED_OPERATORS[op_type](
+                _safe_eval(node.left),
+                _safe_eval(node.right),
+            )
+        raise ValueError
+
+    else:
+        raise ValueError
+
+
+def load_question_program_dict(base_path="evaluation/humaneval/output/humaneval/python-small-test"):
+    """
+    Collect json files under base_path and return
+    {question_id: program} dict from one of the files.
+    """
+
+    # 1️⃣ 모든 json 파일 수집
+    json_paths = glob.glob(f"{base_path}/**/*.json", recursive=True)
+
+    if not json_paths:
+        raise ValueError("No json files found.")
+
+    # 2️⃣ 하나 선택
+    selected_path = random.choice(json_paths)
+
+    print("Using file:", selected_path)
+
+    # 3️⃣ 파일 로드
+    with open(selected_path, "r") as f:
+        data = json.load(f)
+
+    result = {}
+
+    # 4️⃣ question_id -> program dict 생성
+    for item in data.get("data", []):
+        qid = item["question_id"]
+        program = item["program"]
+        result[qid] = program
+
+    return result, json_paths
+
+
+def build_solution(task: dict):
+    # print(task.keys())
+    prompt = task["prompt"]
+    
+    body = task["canonical_solution"]
+    func_name = task["entry_point"]
+
+    # -----------------------------------------
+    # 1. prompt + body 합치기
+    # -----------------------------------------
+    full_code = prompt + textwrap.indent(
+        textwrap.dedent(body),
+        "    "
+    )
+    return full_code
+
+
+def _gold_worker(code: str, func_name, inp, queue):
+    """
+    prompt + canonical_solution을 합쳐서
+    완전한 함수로 만든 뒤 실행
+    """
+    try:
+        full_code = code
+        # print(code)
+
+        # -----------------------------------------
+        # 2. 실행
+        # -----------------------------------------
+        local_env = {}
+        exec(full_code, local_env)
+
+        gold_func = local_env[func_name]
+        result = gold_func(*inp)
+
+        queue.put(("ok", result))
+
+    except Exception as e:
+        queue.put(("error", str(e)))
+
+
+def load_json(path):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_jsonl(path):
+    results = []
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            results.append(json.loads(line))
+    return results
+
+
+
+def save_json(data, path):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+
+def atomic_save_json(data, path):
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+    os.replace(tmp_path, path)
+
+
+def extract_function_name(intent: str) -> str:
+    print(intent)
+    first_line = intent.strip().split("\n")[0]
+    name = first_line.split("def")[1].split("(")[0].strip()
+    return name
+
+
+# def run_with_timeout(code, func_name, inp, timeout=2):
+#     queue = mp.Queue()
+
+#     process = mp.Process(
+#         target=_gold_worker,
+#         args=(code, func_name, inp, queue)
+#     )
+
+#     process.start()
+#     process.join(timeout)
+
+#     if process.is_alive():
+#         process.terminate()
+#         process.join()
+#         return "TimeoutError"
+
+#     if not queue.empty():
+#         status, value = queue.get()
+#         if status == "ok":
+#             return value
+#         else:
+#             return f"ExecutionError: {value}"
+
+#     return "UnknownError"
+
+
+# def run_with_timeout(code, func_name, inp, timeout=2):
+#     queue = mp.Queue()
+
+#     process = mp.Process(
+#         target=_gold_worker,
+#         args=(code, func_name, inp, queue)
+#     )
+
+#     process.start()
+#     process.join(timeout)
+
+#     if process.is_alive():
+#         process.terminate()
+#         process.join()
+#         return "TimeoutError"
+
+#     try:
+#         status, value = queue.get_nowait()
+#     except Exception:
+#         return "UnknownError"
+
+#     if status == "ok":
+#         return value
+#     else:
+#         return f"ExecutionError: {value}"
+
+
+import signal
+
+class TimeoutException(Exception):
+    pass
+
+
+def _timeout_handler(signum, frame):
+    raise TimeoutException
+
+import signal
+import contextlib
+import io
+
+def run_with_timeout(code, func_name, inp, timeout=2):
+    def _timeout_handler(signum, frame):
+        raise TimeoutException()
+
+    signal.signal(signal.SIGALRM, _timeout_handler)
+    signal.alarm(timeout)
+
+    try:
+        full_code = code
+
+        # -----------------------------------------
+        # stdout / stderr 차단
+        # -----------------------------------------
+        f = io.StringIO()
+        with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
+
+            local_env = {}
+            exec(full_code, local_env)
+
+            gold_func = local_env[func_name]
+            result = gold_func(*inp)
+
+
+        signal.alarm(0)
+        return result
+
+    except TimeoutException:
+        return "TimeoutError"
+
+    except Exception as e:
+        # return "ExecutionError"
+        return str(e)
+
+    finally:
+        # 혹시 모를 alarm 잔존 방지
+        signal.alarm(0)
+
+
+def build_full_code(task, body):
+    try:
+        prompt = task["prompt"]
+
+        # -----------------------------------------
+        # 1. prompt + body 합치기
+        # -----------------------------------------
+        full_code = prompt + "    " + body
+        # print(full_code)
+    except:
+        return ""
+    return full_code
+
+
+
+
+def safe_repr(obj, max_len=200):
+    try:
+        s = repr(obj)
+        if len(s) > max_len:
+            return s[:max_len] + "...<truncated>"
+        return s
+    except Exception:
+        return "<unrepresentable>"
+
+def evaluate_snippet(task, mbpp_task, snippet_code, func_name, log_path):
+    task_id = task["task_id"]
+    task_num = task_id
+    output_dir = "results/0301"
+
+
+    local_env = {}
+
+    try:
+        exec(snippet_code, {}, local_env)
+    except Exception:
+        return 0.0
+
+    if func_name not in local_env:
+        print("func_name not in local_env")
+        return 0.0
+
+    func = local_env[func_name]
+    if not isinstance(func, FunctionType):
+        return 0.0
+
+    # 전체 테스트 = base + plus
+    all_inputs = []
+    if "base_input" in mbpp_task:
+        all_inputs.extend(mbpp_task["base_input"])
+    if "plus_input" in mbpp_task:
+        all_inputs.extend(mbpp_task["plus_input"])
+
+    total = len(all_inputs)
+    if total == 0:
+        return 0.0
+
+    passed = 0
+
+    # print(all_inputs)
+
+    for inp in all_inputs:
+        try:
+            # gold output 생성
+            # sol_code = build_solution(task)
+            sol_code = mbpp_task["canonical_solution"]
+            # print(snippet_code)
+            # print(inp)
+            gold_output = run_with_timeout(sol_code, func_name, inp, TIMEOUT)
+            pred = run_with_timeout(snippet_code, func_name, inp, TIMEOUT)
+
+            # # model output 생성
+            # if isinstance(inp, tuple) or isinstance(inp, list):
+            #     pred = func(*inp)
+            # else:
+            #     pred = func(inp)
+
+            # print(gold_output)
+            # print(f"{gold_output}, {pred}")
+
+            if pred == gold_output or 'maximum recursion depth exceeded in comparison' in pred:
+                passed += 1
+            else:
+                with open(log_path, "a") as f:
+                    f.write(
+                        f"code={task_id}\n"
+                        f"input={safe_repr(inp)}, "
+                        f"result={safe_repr(pred)}\n" 
+                        f"expected={safe_repr(gold_output)}\n"                            
+                    )
+
+
+        except Exception as e:
+            # print(e)
+            continue
+
+    rate = passed / total
+    print(f"Pass Rate: {rate}")
+    return rate
+
+
+def evaluate_single_task(task):
+
+    task_id = task['task_id']
+
+    log_dir = f"results/0329/{task['task_id'].replace('Mbpp/', '')}"
+    os.makedirs(log_dir, exist_ok=True)
+
+    mbpp_task = mbpp_tasks[task_id]
+    func_name = mbpp_task["entry_point"]
+    print(func_name)
+
+    solutions = task["solution"]
+
+    # 🔥 핵심: single / multi 모두 처리
+    if isinstance(solutions, str):
+        solutions = [solutions]
+
+    results = []
+    for idx, snippet_code in enumerate(solutions):
+
+        log_path = os.path.join(log_dir, f"failure_evalplus_{idx}.log")
+
+        # 로그 초기화
+        with open(log_path, "w") as f:
+            pass
+
+        try:
+            ratio = evaluate_snippet(
+                task,
+                mbpp_task,
+                snippet_code,
+                func_name,
+                log_path
+            )
+        except Exception as e:
+            ratio = 0.0
+
+        result = {
+            "task_id": task["task_id"],
+            "solution_id": idx,
+            "solution": snippet_code,
+            "ratio": ratio
+        }
+
+        results.append(result)
+
+    return results
+
+
+
+
+
+import json
+import multiprocessing as mp
+from tqdm import tqdm
+from collections import defaultdict
+
+def atomic_save_json(data, path):
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+    import os
+    os.replace(tmp_path, path)
+
+
+# =========================
+# main
+# =========================
+def main():
+    input_path = "mbpp_plus_generations_gpt35_multi.jsonl"
+    output_path = "data/mbpp/mbpp_ratio_multi_gpt35.json"
+
+    raw_data = load_jsonl(input_path)
+
+    num_workers = 16
+
+    # ⭐ 핵심: task별 grouping 구조
+    grouped_results = defaultdict(lambda: {
+        "task_id": None,
+        "solutions": {}
+    })
+
+    with mp.Pool(processes=num_workers) as pool:
+
+        for idx, updated_tasks in enumerate(
+            pool.imap_unordered(evaluate_single_task, raw_data)
+        ):
+            if updated_tasks is None:
+                continue
+
+            for item in updated_tasks:
+                task_id = item["task_id"]
+                sol_id = str(item["solution_id"])  # key는 string으로
+
+                if grouped_results[task_id]["task_id"] is None:
+                    grouped_results[task_id]["task_id"] = task_id
+
+                grouped_results[task_id]["solutions"][sol_id] = {
+                    "solution": item["solution"],
+                    "ratio": item["ratio"]
+                }
+
+            # 🔵 즉시 저장 (crash-safe)
+            atomic_save_json(list(grouped_results.values()), output_path)
+
+            print(f"[{idx+1}/{len(raw_data)}] saved")
+
+    print("All tasks finished.")
+
+# =========================
+# 실행
+# =========================
+if __name__ == "__main__":
+    mp.set_start_method("spawn", force=True)
+    main()

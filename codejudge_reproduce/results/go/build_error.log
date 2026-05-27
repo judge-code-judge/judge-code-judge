@@ -1,0 +1,59 @@
+########### LLM이 생성한 코드 snippet 문제 -> 빌드 에러 ######### (총 43개 task)
+## 미완성 코드 (코드 짤려있음) ##
+Task: 10 | [BUILD ERROR]
+Task: 37 | [BUILD ERROR]
+Task: 39 | [BUILD ERROR]
+Task: 41 | [BUILD ERROR]
+Task: 68 | [BUILD ERROR]
+Task: 73 | [BUILD ERROR]
+Task: 81 | [BUILD ERROR]
+Task: 83 | [BUILD ERROR]
+Task: 92 | [BUILD ERROR]
+Task: 94 | [BUILD ERROR]
+Task: 111 | [BUILD ERROR]
+Task: 112 | [BUILD ERROR]
+Task: 114 | [BUILD ERROR]
+Task: 115 | [BUILD ERROR]
+Task: 116 | [BUILD ERROR]
+Task: 117 | [BUILD ERROR]
+Task: 118 | [BUILD ERROR]
+Task: 128 | [BUILD ERROR]
+Task: 129 | [BUILD ERROR]
+Task: 134 | [BUILD ERROR]
+Task: 135 | [BUILD ERROR]
+Task: 136 | [BUILD ERROR]
+Task: 140 | [BUILD ERROR]
+Task: 141 | [BUILD ERROR]
+Task: 142 | [BUILD ERROR]
+Task: 148 | [BUILD ERROR]
+Task: 150 | [BUILD ERROR]
+Task: 156 | [BUILD ERROR]
+
+## 정의되지 않은 함수/메서드/변수 호출 ##
+Task: 4 | [BUILD ERROR] -> (Mean, AbsoluteDeviations 함수 정의 안되어 있음)
+Task: 65 | [BUILD ERROR] -> (Reverse 함수 정의 안되어있음)
+Task: 82 | [BUILD ERROR] -> (isPrime 함수 정의 안되어있음)
+Task: 106 | [BUILD ERROR] -> (factorial, sum 함수 정의 안되어있음)
+Task: 107 | [BUILD ERROR] -> (isPalindrome 함수 정의 안되어있음)
+Task: 143 | [BUILD ERROR] -> (isPrime 함수 정의 안되어있음)
+
+## 변수 관련 문제 ##
+Task: 29 | [BUILD ERROR] -> (매개변수 strings으로사용해서, 함수 내부에서 strings 패키지명과 식별자 충돌)
+Task: 33 | [BUILD ERROR] -> (허용되지 않는 변수명 l' 사용)
+Task: 119 | [BUILD ERROR] -> (매개변수 strings으로사용해서, 함수 내부에서 strings 패키지명과 식별자 충돌)
+Task: 131 | [BUILD ERROR] -> (변수 err 선언했지만 사용 안함)
+
+## 타입 오류 ##
+Task: 32 | [BUILD ERROR] -> (int와 float64 타입 혼용)
+Task: 151 | [BUILD ERROR] -> (flaot64 타입에 % 연산자 사용)
+Task: 152 | [BUILD ERROR] -> (int와 float64 타입 간의 변환 오류)
+Task: 153 | [BUILD ERROR] -> (int와 float64 타입 간의 연산 오류)
+
+## 무한루프 ##
+Task: 100 | TIMEOUT: Execution exceeded limit
+if n%2 == 0 {
+    n = n/2 + 1
+} else {
+    n = n/2 + 2
+}
+-> n이 계속 줄어들지 않고, 특정 값에서 고정되어 무한루프에 빠짐 (예: n=3일 때 n이 계속 3으로 유지)
